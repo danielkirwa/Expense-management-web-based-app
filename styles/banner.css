@@ -1,0 +1,61 @@
+.banner{
+	background: dodgerblue;
+}
+.banner table{
+	width: 100%;
+	color: white;
+	 font-size: 24px;
+}
+.accountAvertor{
+	float: right;
+}
+
+
+.largeText{
+  font-size: 24px;
+  font-weight: bold;
+}
+.smallText{
+  font-size: 18px;
+  font-weight: bold;
+}
+.dodgerblueText{
+  color: dodgerblue;
+}
+.redText{
+	color: red;
+}
+.brownText{
+  color: brown;
+}
+.myoption{
+	padding: 8px 6px;
+	background: #f0f0f0;
+	font-size: 24px;
+	border-radius: 5px;
+	outline: none;
+	border: none;
+	min-width: 200px;
+}
+.mybutton{
+	padding: 8px 6px;
+	background: dodgerblue;
+	color: white;
+	font-size: 24px;
+	border-radius: 5px;
+	outline: none;
+	border: none;
+	min-width: 250px;
+}
+.myinputtext{
+	padding: 8px 6px;
+	background: #f0f0f0;
+	font-size: 24px;
+	border-radius: 5px;
+	outline: none;
+	border: none;
+	min-width: 250px;
+}
+
+
+

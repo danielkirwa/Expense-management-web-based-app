@@ -1,0 +1,89 @@
+.main-shopping{
+  background: #fff;
+  width: 80%;
+  margin-left: 10%;
+  border: 1px solid #fff;
+  box-shadow: 0 0 0.5rem 0 rgba(0 ,0,0,0.3);
+  padding: 8px;
+  display: block;
+ justify-content: center;
+ margin-bottom: 20px;
+}
+.mybutton{
+  padding: 8px 6px;
+  background: #00000000;
+   border: dodgerblue solid 1px;
+  color: dodgerblue;
+  font-size: 24px;
+  border-radius: 5px;
+  outline: none;
+  min-width: 250px;
+
+}
+.mybutton:hover{
+  cursor: pointer;
+  border: dodgerblue solid 1px;
+background: dodgerblue;
+color: white;
+}
+.smallmargintop{
+  margin-top: 20px;
+}
+.scroll-table{
+  overflow: hidden;
+  overflow-x: scroll;
+}
+.table-holder{
+   background: #fff;
+   width: 80%;
+   min-width: 750px;
+  margin-left: 10%;
+  border: 1px solid #fff;
+  box-shadow: 0 0 0.5rem 0 rgba(0 ,0,0,0.3);
+  padding: 8px;
+ margin-top: 20px;
+ margin-bottom: 20px;
+
+}
+.table-caption{
+  display: flex;
+ justify-content: center;
+  width: 100%;
+  border-bottom: 2px solid grey;
+  padding-bottom: 8px;
+}
+.table-holder table{
+  width: 100%;
+ }
+ .table-holder thead{
+  color: brown;
+  font-size: 21px;
+  text-align: center;
+  background-color: #fff;
+
+ }
+ .table-holder th{
+  padding: 12px 8px;
+
+ }
+  .table-holder td{
+    text-align: center;
+    font-size: 18px;
+    padding: 8px 6px;
+  }
+  .table-holder tbody tr:nth-child(odd){background-color: #f2f2f2;}
+  .table-holder tbody tr:hover{background-color: #ddd; }
+.hoverme{
+ cursor: pointer;
+}
+ .editbutton{
+  background: #00000000;
+  color: dodgerblue;
+  outline: none;
+  border: none;
+  font-size: 18px;
+  border-bottom: dodgerblue solid 2px;
+}
+.editbutton:hover{
+  cursor: pointer;
+}

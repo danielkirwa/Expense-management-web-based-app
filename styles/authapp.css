@@ -1,0 +1,51 @@
+.fullscreen{
+
+}
+
+.mybutton{
+	padding: 8px 6px;
+	background: teal;
+	color: white;
+	font-size: 24px;
+	border-radius: 5px;
+	outline: none;
+	border: none;
+	min-width: 250px;
+}
+.mybuttontrans{
+	padding: 8px 6px;
+	background: #00000000;
+	color: teal;
+	font-size: 24px;
+	border-radius: 5px;
+	outline: none;
+	border: none;
+	min-width: 250px;
+	border: #fff solid 1px;
+}
+.mybuttontrans:hover{
+	cursor: pointer;
+	border: teal solid 1px;
+}
+.mybutton:hover{
+	cursor: pointer;
+
+}
+.myinputtext{
+	padding: 8px 6px;
+	background: #f0f0f0;
+	font-size: 24px;
+	border-radius: 5px;
+	outline: none;
+	border: none;
+	min-width: 250px;
+}
+.myoption{
+	padding: 8px 6px;
+	background: #f0f0f0;
+	font-size: 24px;
+	border-radius: 5px;
+	outline: none;
+	border: none;
+	min-width: 250px;
+}

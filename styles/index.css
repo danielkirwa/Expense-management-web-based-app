@@ -1,0 +1,28 @@
+.mybutton{
+	padding: 8px 6px;
+	background: teal;
+	color: white;
+	font-size: 24px;
+	border-radius: 5px;
+	outline: none;
+	border: none;
+	min-width: 250px;
+}
+.myinputtext{
+	padding: 8px 6px;
+	background: #f0f0f0;
+	font-size: 24px;
+	border-radius: 5px;
+	outline: none;
+	border: none;
+	min-width: 250px;
+}
+.myoption{
+	padding: 8px 6px;
+	background: #f0f0f0;
+	font-size: 24px;
+	border-radius: 5px;
+	outline: none;
+	border: none;
+	min-width: 250px;
+}
