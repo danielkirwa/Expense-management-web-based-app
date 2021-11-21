@@ -41,8 +41,8 @@
 <hr style="color: dodgerblue;">
  					<div>
  						<center>
- 						<input type="submit" name="" value="Add savings" class="mybutton"><br><br>
- 					<input type="submit" name="" value="View all savings" class="mybutton"></center>
+ 						<input type="submit" name="" value="Add savings/View savings" class="mybutton"><br><br>
+ 				</center>
  				</div>
 
 

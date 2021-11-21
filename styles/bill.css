@@ -22,6 +22,8 @@
 .mybutton:hover{
   cursor: pointer;
   border: dodgerblue solid 1px;
+  background: dodgerblue;
+  color: white;
 
 }
 .smallmargintop{
