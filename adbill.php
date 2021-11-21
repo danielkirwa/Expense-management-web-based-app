@@ -30,6 +30,7 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
   return $theValue;
 }
 }
+$currentPage = $_SERVER["PHP_SELF"];
 
 $editFormAction = $_SERVER['PHP_SELF'];
 if (isset($_SERVER['QUERY_STRING'])) {
@@ -45,7 +46,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
                        GetSQLValueString($_POST['userid'], "text"));
 
   mysql_select_db($database_expenceconn, $expenceconn);
- 
+ $Result1 = mysql_query($insertSQL, $expenceconn);
  if (mysql_errno($expenceconn) > 0) {
   // code...
 
@@ -60,12 +61,54 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
 }
 
 }
+/// select all bills to display
+
+
+$maxRows_RecordSetBill = 10;
+$pageNum_RecordSetBill = 0;
+if (isset($_GET['pageNum_RecordSetBill'])) {
+  $pageNum_RecordSetBill = $_GET['pageNum_RecordSetBill'];
+}
+$startRow_RecordSetBill = $pageNum_RecordSetBill * $maxRows_RecordSetBill;
+
+mysql_select_db($database_expenceconn, $expenceconn);
+$query_RecordSetBill = "SELECT billID, billname, billdescription, dateofadd FROM bills ORDER BY dateofadd DESC";
+$query_limit_RecordSetBill = sprintf("%s LIMIT %d, %d", $query_RecordSetBill, $startRow_RecordSetBill, $maxRows_RecordSetBill);
+$RecordSetBill = mysql_query($query_limit_RecordSetBill, $expenceconn) or die(mysql_error());
+$row_RecordSetBill = mysql_fetch_assoc($RecordSetBill);
+
+if (isset($_GET['totalRows_RecordSetBill'])) {
+  $totalRows_RecordSetBill = $_GET['totalRows_RecordSetBill'];
+} else {
+  $all_RecordSetBill = mysql_query($query_RecordSetBill);
+  $totalRows_RecordSetBill = mysql_num_rows($all_RecordSetBill);
+}
+$totalPages_RecordSetBill = ceil($totalRows_RecordSetBill/$maxRows_RecordSetBill)-1;
+
+$queryString_RecordSetBill = "";
+if (!empty($_SERVER['QUERY_STRING'])) {
+  $params = explode("&", $_SERVER['QUERY_STRING']);
+  $newParams = array();
+  foreach ($params as $param) {
+    if (stristr($param, "pageNum_RecordSetBill") == false && 
+        stristr($param, "totalRows_RecordSetBill") == false) {
+      array_push($newParams, $param);
+    }
+  }
+  if (count($newParams) != 0) {
+    $queryString_RecordSetBill = "&" . htmlentities(implode("&", $newParams));
+  }
+}
+$queryString_RecordSetBill = sprintf("&totalRows_RecordSetBill=%d%s", $totalRows_RecordSetBill, $queryString_RecordSetBill);
+
+
 
 ?>
 
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta charset="utf-8">
 	<title>add bills</title>
 	<link rel="stylesheet" type="text/css" href="styles/banner.css">
@@ -153,34 +196,50 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
  		<table>
  			<thead>
  				<tr>
+          <th>Bill ID</th>
+          <th>Bill name</th>
+          <th>Bill Description</th>
  					<th>Date/Time</th>
- 					<th>Bill name</th>
- 					<th>Bill Description</th>
  					<th>Action</th>
  				</tr>
  			</thead>
  			<tbody>
- 				<tr>
- 					<td>12/12/2020</td>
- 					<td>Water bill</td>
- 					<td>4500</td>
- 				     <td><select class="myoption dodgerblueText">
-                     	<option class="dodgerblueText">Edit bill</option>
-                     	<option class="redText">Delete bill</option>
-                     </select></td>
- 				</tr>
- 				<tr>
- 					<td>10/10/2020</td>
- 					<td>Electric Bill</td>
- 					<td>2500</td>
-                     <td><select class="myoption dodgerblueText">
-                     	<option class="dodgerblueText">Edit bill</option>
-                     	<option class="redText">Delete bill</option>
-                     </select></td>
- 				</tr>
+     <tr>
+       
+           <?php do { ?>
+      <tr>
+        <td><a href="billsview.php?recordID=<?php echo $row_RecordSetBill['billID']; ?>"> <?php echo $row_RecordSetBill['billID']; ?>&nbsp; </a></td>
+        <td><?php echo $row_RecordSetBill['billname']; ?>&nbsp; </td>
+        <td><?php echo $row_RecordSetBill['billdescription']; ?>&nbsp; </td>
+        <td><?php echo $row_RecordSetBill['dateofadd']; ?>&nbsp; </td>
+      </tr>
+      <?php } while ($row_RecordSetBill = mysql_fetch_assoc($RecordSetBill)); ?>
+     </tr>
  			</tbody>
  		</table>
+ <table border="0">
+    <tr>
+      <td><?php if ($pageNum_RecordSetBill > 0) { // Show if not first page ?>
+          <a href="<?php printf("%s?pageNum_RecordSetBill=%d%s", $currentPage, 0, $queryString_RecordSetBill); ?>">First</a>
+          <?php } // Show if not first page ?></td>
+      <td><?php if ($pageNum_RecordSetBill > 0) { // Show if not first page ?>
+          <a href="<?php printf("%s?pageNum_RecordSetBill=%d%s", $currentPage, max(0, $pageNum_RecordSetBill - 1), $queryString_RecordSetBill); ?>">Previous</a>
+          <?php } // Show if not first page ?></td>
+      <td><?php if ($pageNum_RecordSetBill < $totalPages_RecordSetBill) { // Show if not last page ?>
+          <a href="<?php printf("%s?pageNum_RecordSetBill=%d%s", $currentPage, min($totalPages_RecordSetBill, $pageNum_RecordSetBill + 1), $queryString_RecordSetBill); ?>">Next</a>
+          <?php } // Show if not last page ?></td>
+      <td><?php if ($pageNum_RecordSetBill < $totalPages_RecordSetBill) { // Show if not last page ?>
+          <a href="<?php printf("%s?pageNum_RecordSetBill=%d%s", $currentPage, $totalPages_RecordSetBill, $queryString_RecordSetBill); ?>">Last</a>
+          <?php } // Show if not last page ?></td>
+    </tr>
+  </table>
+Records <?php echo ($startRow_RecordSetBill + 1) ?> to <?php echo min($startRow_RecordSetBill + $maxRows_RecordSetBill, $totalRows_RecordSetBill) ?> of <?php echo $totalRows_RecordSetBill ?></div>
+       
+
  	</div>
  	</div>
 </body>
 </html>
+<?php
+mysql_free_result($RecordSetBill);
+?>

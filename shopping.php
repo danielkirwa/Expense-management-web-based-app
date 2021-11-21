@@ -41,8 +41,8 @@
 <hr style="color: dodgerblue;">
  					<div>
  						<center>
- 						<input type="submit" name="" value="Add shopping" class="mybutton"><br><br>
- 					<input type="submit" name="" value="View all shopping" class="mybutton"></center>
+ 						<input type="submit" name="" value="Add shopping/View shopping" class="mybutton" id="calladdshopping"><br><br>
+ 					</center>
  				</div>
 
 
@@ -88,5 +88,14 @@
  		</table>
  	</div>
  	</div>
+
+ 	<script type="text/javascript">
+ 		let calladdshopping = document.getElementById('calladdshopping');
+ 		calladdshopping.addEventListener('click' , () =>{
+ 			location.href = "adshopping.php";
+ 		})
+
+
+ 	</script>
 </body>
 </html>

@@ -41,8 +41,8 @@
 <hr style="color: dodgerblue;">
  					<div>
  						<center>
- 						<input type="submit" name="" value="Add bills" class="mybutton"><br><br>
- 					<input type="submit" name="" value="View all bills" class="mybutton"></center>
+ 						<input type="submit" name="" value="Add bills/View bills" class="mybutton" id="calladdbills"><br><br>
+ 					</center>
  				</div>
 
 
@@ -87,5 +87,14 @@
  		</table>
  	</div>
  	</div>
+
+ 		<script type="text/javascript">
+ 		let calladdbills = document.getElementById('calladdbills');
+ 		calladdbills.addEventListener('click' , () =>{
+ 			location.href = "adbill.php";
+ 		})
+
+
+ 	</script>
 </body>
 </html>

@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<info>
+	<infoitem key="UD_recodeSetBill" value="name:billname;datatype:string,name:billdescription;datatype:string,name:dateofadd;datatype:date" />
+	<infoitem key="UD_Recordset1" value="name:billID;datatype:int,name:billname;datatype:string,name:billdescription;datatype:string,name:dateofadd;datatype:date,name:userid;datatype:string" />
+	<infoitem key="UD_recordSetBill" value="name:billname;datatype:string,name:billdescription;datatype:string,name:dateofadd;datatype:date" />
+	<infoitem key="UD_RecoedSetBill" value="name:billID;datatype:int,name:billname;datatype:string,name:billdescription;datatype:string,name:dateofadd;datatype:date" />
+	<infoitem key="UD_RecordSetBill" value="name:billID;datatype:int,name:billname;datatype:string,name:billdescription;datatype:string,name:dateofadd;datatype:date" />
+</info>

@@ -9,31 +9,19 @@ let analyticTitel = document.querySelector('.analytic-titel');
 
 let popbill = document.getElementById('billsbtn');
 popbill.addEventListener('click' , ()=>{
-  openanalytic("BILLS  ");
- createPieChart();
- createBarGraph();
- createBarGraphrReport();
+location.href = "bill.php";
 })
 let popshopping = document.getElementById('shoppingbtn');
 popshopping.addEventListener('click' , ()=>{
-  openanalytic("SHOPPING ");
- createPieChart();
- createBarGraph();
- createBarGraphrReport();
+location.href = "shopping.php";
 })
 let popsaving = document.getElementById('savingbtn');
 popsaving.addEventListener('click' , ()=>{
-  openanalytic("SAVING  ");
- createPieChart();
- createBarGraph();
- createBarGraphrReport();
+location.href = "saving.php";
 })
 let popemergency = document.getElementById('emergencybtn')
 popemergency.addEventListener('click' , ()=>{
-  openanalytic("EMERGENCY ");
- createPieChart();
- createBarGraph();
- createBarGraphrReport();
+location.href = "emergency.php";
 })
 
 closeanalysis.addEventListener('click' , () =>{
