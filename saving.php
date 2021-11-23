@@ -41,7 +41,7 @@
 <hr style="color: dodgerblue;">
  					<div>
  						<center>
- 						<input type="submit" name="" value="Add savings/View savings" class="mybutton"><br><br>
+ 						<input type="submit" name="" value="Add savings/View savings" class="mybutton" id="calladdsaving"><br><br>
  				</center>
  				</div>
 
@@ -85,5 +85,14 @@
  		</table>
  	</div>
  	</div>
+
+ 		<script type="text/javascript">
+ 		let callsaving = document.getElementById('calladdsaving');
+ 		callsaving.addEventListener('click' , () =>{
+ 			location.href = "adsaving.php";
+ 		})
+
+
+ 	</script>
 </body>
 </html>

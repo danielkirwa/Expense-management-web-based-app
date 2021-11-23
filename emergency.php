@@ -41,8 +41,8 @@
 <hr style="color: dodgerblue;">
  					<div>
  						<center>
- 						<input type="submit" name="" value="Add emergency" class="mybutton"><br><br>
- 					<input type="submit" name="" value="View all emergency" class="mybutton"></center>
+ 						<input type="submit" name="" value="Add emergency/View emergency" class="mybutton" id="calladdemergency"><br><br>
+ 					</center>
  				</div>
 
 
@@ -85,5 +85,15 @@
  		</table>
  	</div>
  	</div>
+
+
+ 		<script type="text/javascript">
+ 		let callemergency = document.getElementById('calladdemergency');
+ 		callemergency.addEventListener('click' , () =>{
+ 			location.href = "ademergency.php";
+ 		})
+
+
+ 	</script>
 </body>
 </html>
