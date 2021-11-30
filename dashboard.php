@@ -3,7 +3,7 @@
 
 
 
-// TOTAL AMOUNT 
+// TOTAL AMOUNT BILL
 mysql_select_db($database_expenceconn, $expenceconn);
 $query_RecordsetTransAmount = "SELECT SUM(billstransaction.billtrasactionamount) AS AMOUNT FROM billstransaction";
 $RecordsetTransAmount = mysql_query($query_RecordsetTransAmount, $expenceconn) or die(mysql_error());
@@ -11,6 +11,14 @@ $row_RecordsetTransAmount = mysql_fetch_assoc($RecordsetTransAmount);
 $totalRows_RecordsetTransAmount = mysql_num_rows($RecordsetTransAmount);
 
 //END OF TOTAL AMOUNT
+
+// TOTAL AMOUNT SHOPPING
+mysql_select_db($database_expenceconn, $expenceconn);
+$query_RecordsetSumShoppingTrans = "SELECT SUM( shoppingtransaction.shoppingtransactionamount) AS TOTALAMOUNT FROM shoppingtransaction";
+$RecordsetSumShoppingTrans = mysql_query($query_RecordsetSumShoppingTrans, $expenceconn) or die(mysql_error());
+$row_RecordsetSumShoppingTrans = mysql_fetch_assoc($RecordsetSumShoppingTrans);
+$totalRows_RecordsetSumShoppingTrans = mysql_num_rows($RecordsetSumShoppingTrans);
+// END OF SHOPPING
 
 
 ?>
@@ -50,7 +58,9 @@ $totalRows_RecordsetTransAmount = mysql_num_rows($RecordsetTransAmount);
  					<img src="assets/totalspent.png" width="75px">
  				</td>
  				<td>
- 					<label class="largeText dodgerblueText">Your Total Expense : <span>null</span></label>
+ 					<label class="largeText dodgerblueText">Your Total Expense : <span>
+ <?php echo $row_RecordsetTransAmount['AMOUNT'] + $row_RecordsetSumShoppingTrans['TOTALAMOUNT']; ?>
+ 					</span></label>
  				</td>
  			</tr>
  		</table>
@@ -78,7 +88,9 @@ $totalRows_RecordsetTransAmount = mysql_num_rows($RecordsetTransAmount);
  					<img src="assets/shopping.png" width="75px">
  				</td>
  				<td>
- 					<label class="smallText dodgerblueText">Shopping : <span>null</span></label>
+ 					<label class="smallText dodgerblueText">Shopping : <span>
+ 						<?php echo $row_RecordsetSumShoppingTrans['TOTALAMOUNT']; ?>
+ 					</span></label>
  				</td>
  			</tr>
  		</table>

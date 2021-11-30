@@ -144,7 +144,9 @@ $queryString_RecordSetBill = sprintf("&totalRows_RecordSetBill=%d%s", $totalRows
  				</div>
  				<div class="smallmargintop">
  					<center>
- 					<label class="largeText dodgerblueText">Add your bills : <span>null</span></label> &nbsp;</center>
+ 					<label class="largeText dodgerblueText">Total available bills : <span>
+            <?php echo $totalRows_RecordSetBill ?>
+          </span></label> &nbsp;</center>
  					</div>
 <hr style="color: dodgerblue;">
  					
