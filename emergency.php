@@ -55,6 +55,8 @@
  	<div class="table-holder">
  		<div class="table-caption">
  			<label class="largeText brownText">Recent Shopping  Transactions : <span>null</span></label>
+ 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ 			<input type="submit" name="" class="editbutton" value="Add new transaction">
  		</div>
  		<table>
  			<thead>

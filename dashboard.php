@@ -1,3 +1,22 @@
+<?php require_once('Connections/expenceconn.php'); ?>
+<?php
+
+
+
+// TOTAL AMOUNT 
+mysql_select_db($database_expenceconn, $expenceconn);
+$query_RecordsetTransAmount = "SELECT SUM(billstransaction.billtrasactionamount) AS AMOUNT FROM billstransaction";
+$RecordsetTransAmount = mysql_query($query_RecordsetTransAmount, $expenceconn) or die(mysql_error());
+$row_RecordsetTransAmount = mysql_fetch_assoc($RecordsetTransAmount);
+$totalRows_RecordsetTransAmount = mysql_num_rows($RecordsetTransAmount);
+
+//END OF TOTAL AMOUNT
+
+
+?>
+
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -45,7 +64,9 @@
  					<img src="assets/expence.png" width="75px">
  				</td>
  				<td>
- 					<label class="smallText dodgerblueText">Bills : <span>null</span></label>
+ 					<label class="smallText dodgerblueText">Bills : <span>
+ 						<?php echo $row_RecordsetTransAmount['AMOUNT']; ?>
+ 					</span></label>
  				</td>
  			</tr>
  		</table>

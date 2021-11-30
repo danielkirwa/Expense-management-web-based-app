@@ -5,8 +5,10 @@
 	<title>saving</title>
 	<link rel="stylesheet" type="text/css" href="styles/banner.css">
 	<link rel="stylesheet" type="text/css" href="styles/shopping.css">
+	<link rel="stylesheet" type="text/css" href="styles/popuptransaction.css">
 </head>
 <body>
+	<div class="mybody">
 	<div class="banner">
 		<table>
  			<tr>
@@ -55,6 +57,8 @@
  	<div class="table-holder">
  		<div class="table-caption">
  			<label class="largeText brownText">Recent Shopping  Transactions : <span>null</span></label>
+ 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+ 			<input type="submit" name="" class="editbutton" value="Add new transaction" id="callbilltransaction">
  		</div>
  		<table>
  			<thead>
@@ -85,13 +89,71 @@
  		</table>
  	</div>
  	</div>
+</div>
+ 	<!-- popup form for transaction -->
+ 		<div class="scroll-analysis">
+ 
+ 		<div class="analysis-holder">
+	
+	<label class="analytic-titel">null</label>
+	<label class="myfloatbutton" id="btnclosetransaction" ><span>X</span></label>
+	<br>
+	<hr>
+	<div class="report-holder">
+ 		<div class="report-card">
+ 			
+ 	 <label>TOTAL ENROLLS : <span>null</span></label><br>
+ 	 <canvas id="pieChartEnrolls" width="50%"></canvas>
+ 		</div>
+ 		<div class="report-card-long">
+ 			
+ 	 <label>RESULTS </label><br>
+ 	 <canvas id="barGraphResults" width="50%"></canvas>
+ 		</div>
+ 		<div class="report-card-longer">
+ 			
+ 	 <label>GENERAL INFORMATION </label><br>
+ 	 <canvas id="barGraphUnitReport" width="50%"></canvas>
+ 		</div>
+	</div>
+	
+	</div>
+</div>
+
 
  		<script type="text/javascript">
+let popuptransaction = document.querySelector('.scroll-analysis');
+let closeanalysis = document.getElementById('btnclosetransaction');
+let blurbody = document.querySelector('.mybody');
+let analyticTitel = document.querySelector('.analytic-titel');
+
+
  		let callsaving = document.getElementById('calladdsaving');
  		callsaving.addEventListener('click' , () =>{
  			location.href = "adsaving.php";
  		})
 
+ 		let calltransaction = document.getElementById('callbilltransaction');
+ 		calltransaction.addEventListener('click' , () =>{
+ 			openTransaction("Saving Transaction");
+
+ 		});
+
+ 			function openTransaction(unit) {
+  // body...
+  popuptransaction.style.display = "block";
+  blurbody.style.opacity = "0.2";
+  analyticTitel.innerHTML = unit ;
+}
+function closeanalytic() {
+  // body...
+  popuptransaction.style.display = "none";
+  blurbody.style.opacity = "1";
+}
+
+closeanalysis.addEventListener('click' , () =>{
+ closeanalytic();
+})
 
  	</script>
 </body>
