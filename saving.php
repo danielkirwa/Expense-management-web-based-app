@@ -1,3 +1,82 @@
+<?php require_once('Connections/expenceconn.php'); ?>
+<?php
+if (!function_exists("GetSQLValueString")) {
+function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
+{
+  if (PHP_VERSION < 6) {
+    $theValue = get_magic_quotes_gpc() ? stripslashes($theValue) : $theValue;
+  }
+
+  $theValue = function_exists("mysql_real_escape_string") ? mysql_real_escape_string($theValue) : mysql_escape_string($theValue);
+
+  switch ($theType) {
+    case "text":
+      $theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
+      break;    
+    case "long":
+    case "int":
+      $theValue = ($theValue != "") ? intval($theValue) : "NULL";
+      break;
+    case "double":
+      $theValue = ($theValue != "") ? doubleval($theValue) : "NULL";
+      break;
+    case "date":
+      $theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
+      break;
+    case "defined":
+      $theValue = ($theValue != "") ? $theDefinedValue : $theNotDefinedValue;
+      break;
+  }
+  return $theValue;
+}
+}
+
+$editFormAction = $_SERVER['PHP_SELF'];
+if (isset($_SERVER['QUERY_STRING'])) {
+  $editFormAction .= "?" . htmlentities($_SERVER['QUERY_STRING']);
+}
+
+if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
+  $insertSQL = sprintf("INSERT INTO savingtransaction (savingtransactionid, savingtransactiondat, savingtransactionamount, savingtransactionsatus, savingID) VALUES (%s, %s, %s, %s, %s)",
+                       GetSQLValueString($_POST['savingtransactionid'], "int"),
+                       GetSQLValueString($_POST['savingtransactiondat'], "date"),
+                       GetSQLValueString($_POST['savingtransactionamount'], "text"),
+                       GetSQLValueString($_POST['savingtransactionsatus'], "text"),
+                       GetSQLValueString($_POST['savingID'], "int"));
+
+  mysql_select_db($database_expenceconn, $expenceconn);
+  $Result1 = mysql_query($insertSQL, $expenceconn) or die(mysql_error());
+}
+
+$maxRows_RecordsetSavingTransaction = 5;
+$pageNum_RecordsetSavingTransaction = 0;
+if (isset($_GET['pageNum_RecordsetSavingTransaction'])) {
+  $pageNum_RecordsetSavingTransaction = $_GET['pageNum_RecordsetSavingTransaction'];
+}
+$startRow_RecordsetSavingTransaction = $pageNum_RecordsetSavingTransaction * $maxRows_RecordsetSavingTransaction;
+
+mysql_select_db($database_expenceconn, $expenceconn);
+$query_RecordsetSavingTransaction = "SELECT savings.savingname, savingtransaction.savingtransactiondat, savingtransaction.savingtransactionamount, savingtransaction.savingtransactionsatus, savingtransaction.savingID FROM savings, savingtransaction WHERE savingtransaction.savingID = savings.savingID ";
+$query_limit_RecordsetSavingTransaction = sprintf("%s LIMIT %d, %d", $query_RecordsetSavingTransaction, $startRow_RecordsetSavingTransaction, $maxRows_RecordsetSavingTransaction);
+$RecordsetSavingTransaction = mysql_query($query_limit_RecordsetSavingTransaction, $expenceconn) or die(mysql_error());
+$row_RecordsetSavingTransaction = mysql_fetch_assoc($RecordsetSavingTransaction);
+
+if (isset($_GET['totalRows_RecordsetSavingTransaction'])) {
+  $totalRows_RecordsetSavingTransaction = $_GET['totalRows_RecordsetSavingTransaction'];
+} else {
+  $all_RecordsetSavingTransaction = mysql_query($query_RecordsetSavingTransaction);
+  $totalRows_RecordsetSavingTransaction = mysql_num_rows($all_RecordsetSavingTransaction);
+}
+$totalPages_RecordsetSavingTransaction = ceil($totalRows_RecordsetSavingTransaction/$maxRows_RecordsetSavingTransaction)-1;
+
+mysql_select_db($database_expenceconn, $expenceconn);
+$query_RecordsetSumSaving = "SELECT SUM(savingtransaction.savingtransactionamount) AS TOTALSAVING FROM savingtransaction";
+$RecordsetSumSaving = mysql_query($query_RecordsetSumSaving, $expenceconn) or die(mysql_error());
+$row_RecordsetSumSaving = mysql_fetch_assoc($RecordsetSumSaving);
+$totalRows_RecordsetSumSaving = mysql_num_rows($RecordsetSumSaving);
+?>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -38,7 +117,7 @@
  				</div>
  				<div class="smallmargintop">
  					<center>
- 					<label class="largeText dodgerblueText">Manage your savings : <span>null</span></label> &nbsp;</center>
+ 					<label class="largeText dodgerblueText">Manage your savings  <span></span></label> &nbsp;</center>
  					</div>
 <hr style="color: dodgerblue;">
  					<div>
@@ -56,9 +135,9 @@
  	<div class="scroll-table">
  	<div class="table-holder">
  		<div class="table-caption">
- 			<label class="largeText brownText">Recent Shopping  Transactions : <span>null</span></label>
+ 			<label class="largeText brownText">Recent Saving  Transactions : <span><?php echo $row_RecordsetSumSaving['TOTALSAVING']; ?></span></label>
  			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
- 			<input type="submit" name="" class="editbutton" value="Add new transaction" id="callbilltransaction">
+ 			<input type="submit" name="" class="editbutton" value="Add new transaction" id="callsavingtransaction">
  		</div>
  		<table>
  			<thead>
@@ -71,20 +150,15 @@
  				</tr>
  			</thead>
  			<tbody>
- 				<tr>
- 					<td>12/12/2020</td>
- 					<td>Shopping</td>
- 					<td>4500</td>
- 					<td>Complete</td>
- 					<td>Action</td>
- 				</tr>
- 				<tr>
- 					<td>10/10/2020</td>
- 					<td>Electric Bill</td>
- 					<td>2500</td>
- 					<td>Complete</td>
- 					<td>Action</td>
- 				</tr>
+ 				<?php do { ?>
+      <tr>
+      	<td><?php echo $row_RecordsetSavingTransaction['savingtransactiondat']; ?></td>
+        <td><?php echo $row_RecordsetSavingTransaction['savingname']; ?></td>
+        <td><?php echo $row_RecordsetSavingTransaction['savingtransactionamount']; ?></td>
+        <td><?php echo $row_RecordsetSavingTransaction['savingtransactionsatus']; ?></td>
+        
+      </tr>
+      <?php } while ($row_RecordsetSavingTransaction = mysql_fetch_assoc($RecordsetSavingTransaction)); ?>
  			</tbody>
  		</table>
  	</div>
@@ -99,23 +173,31 @@
 	<label class="myfloatbutton" id="btnclosetransaction" ><span>X</span></label>
 	<br>
 	<hr>
-	<div class="report-holder">
- 		<div class="report-card">
- 			
- 	 <label>TOTAL ENROLLS : <span>null</span></label><br>
- 	 <canvas id="pieChartEnrolls" width="50%"></canvas>
- 		</div>
- 		<div class="report-card-long">
- 			
- 	 <label>RESULTS </label><br>
- 	 <canvas id="barGraphResults" width="50%"></canvas>
- 		</div>
- 		<div class="report-card-longer">
- 			
- 	 <label>GENERAL INFORMATION </label><br>
- 	 <canvas id="barGraphUnitReport" width="50%"></canvas>
- 		</div>
-	</div>
+<!-- transaction form -->
+<form action="<?php echo $editFormAction; ?>" method="post" name="form1" id="form1">
+  <table align="center">
+    <tr valign="baseline">
+      <td><input type="text" name="savingtransactionid" value="" size="32" class="myinputtext" placeholder="Transaction ID" /></td>
+    </tr>
+    <tr valign="baseline">
+      <td><input type="date" name="savingtransactiondat" value="" size="32" class="myinputtext"  /></td>
+    </tr>
+    <tr valign="baseline">
+      <td><input type="text" name="savingtransactionamount" value="" size="32" class="myinputtext" placeholder="amount" /></td>
+    </tr>
+    <tr valign="baseline">
+      <td><input type="text" name="savingtransactionsatus" value="" size="32" class="myinputtext" placeholder="Status" /></td>
+    </tr>
+    <tr valign="baseline">
+      <td><input type="text" name="savingID" value="" size="32" class="myinputtext" placeholder="Saving ID" /></td>
+    </tr>
+    <tr valign="baseline">
+      <td><input type="submit" value="Add new Transaction" class="mybutton" /></td>
+    </tr>
+  </table>
+  <input type="hidden" name="MM_insert" value="form1" />
+</form>
+<p>&nbsp;</p>
 	
 	</div>
 </div>
@@ -133,7 +215,7 @@ let analyticTitel = document.querySelector('.analytic-titel');
  			location.href = "adsaving.php";
  		})
 
- 		let calltransaction = document.getElementById('callbilltransaction');
+ 		let calltransaction = document.getElementById('callsavingtransaction');
  		calltransaction.addEventListener('click' , () =>{
  			openTransaction("Saving Transaction");
 
@@ -158,3 +240,7 @@ closeanalysis.addEventListener('click' , () =>{
  	</script>
 </body>
 </html>
+<?php
+mysql_free_result($RecordsetSavingTransaction);
+mysql_free_result($RecordsetSumSaving);
+?>

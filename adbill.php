@@ -193,7 +193,7 @@ $queryString_RecordSetBill = sprintf("&totalRows_RecordSetBill=%d%s", $totalRows
  	<div class="scroll-table">
  	<div class="table-holder">
  		<div class="table-caption">
- 			<label class="largeText brownText">Active Bills   : <span>null</span></label>
+ 			<label class="largeText brownText">Active Bills   </label>
  		</div>
  		<table>
  			<thead>

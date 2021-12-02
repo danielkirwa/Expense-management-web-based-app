@@ -174,7 +174,7 @@ $queryString_RecordSetSaving = sprintf("&totalRows_RecordSetSaving=%d%s", $total
  	<div class="scroll-table">
  	<div class="table-holder">
  		<div class="table-caption">
- 			<label class="largeText brownText">Active active saving   : <span>null</span></label>
+ 			<label class="largeText brownText">Active active saving   </label>
  		</div>
  		<table>
  			<thead>
@@ -192,7 +192,7 @@ $queryString_RecordSetSaving = sprintf("&totalRows_RecordSetSaving=%d%s", $total
  </tr>
     <?php do { ?>
       <tr>
-        <td><a href="savingviews.php?recordID=<?php echo $row_RecordSetSaving['savingID']; ?>"> <?php echo $row_RecordSetSaving['savingID']; ?>&nbsp; </a></td>
+        <td> <?php echo $row_RecordSetSaving['savingID']; ?>&nbsp;</td>
         <td><?php echo $row_RecordSetSaving['savingname']; ?>&nbsp; </td>
         <td><?php echo $row_RecordSetSaving['savingpurpose']; ?>&nbsp; </td>
         <td><?php echo $row_RecordSetSaving['savingdateclosed']; ?>&nbsp; </td>

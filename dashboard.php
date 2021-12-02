@@ -20,7 +20,14 @@ $row_RecordsetSumShoppingTrans = mysql_fetch_assoc($RecordsetSumShoppingTrans);
 $totalRows_RecordsetSumShoppingTrans = mysql_num_rows($RecordsetSumShoppingTrans);
 // END OF SHOPPING
 
+// TOTAL AMOUNT SAVINGS
+mysql_select_db($database_expenceconn, $expenceconn);
+$query_RecordsetSumSaving = "SELECT SUM(savingtransaction.savingtransactionamount) AS TOTALSAVING FROM savingtransaction";
+$RecordsetSumSaving = mysql_query($query_RecordsetSumSaving, $expenceconn) or die(mysql_error());
+$row_RecordsetSumSaving = mysql_fetch_assoc($RecordsetSumSaving);
+$totalRows_RecordsetSumSaving = mysql_num_rows($RecordsetSumSaving);
 
+// END OF SAVING
 ?>
 
 
@@ -59,7 +66,7 @@ $totalRows_RecordsetSumShoppingTrans = mysql_num_rows($RecordsetSumShoppingTrans
  				</td>
  				<td>
  					<label class="largeText dodgerblueText">Your Total Expense : <span>
- <?php echo $row_RecordsetTransAmount['AMOUNT'] + $row_RecordsetSumShoppingTrans['TOTALAMOUNT']; ?>
+ <?php echo 0.0 +$row_RecordsetTransAmount['AMOUNT'] + $row_RecordsetSumShoppingTrans['TOTALAMOUNT'] + $row_RecordsetSumSaving['TOTALSAVING']; ?>
  					</span></label>
  				</td>
  			</tr>
@@ -75,7 +82,7 @@ $totalRows_RecordsetSumShoppingTrans = mysql_num_rows($RecordsetSumShoppingTrans
  				</td>
  				<td>
  					<label class="smallText dodgerblueText">Bills : <span>
- 						<?php echo $row_RecordsetTransAmount['AMOUNT']; ?>
+ 						<?php echo 0.0 + $row_RecordsetTransAmount['AMOUNT']; ?>
  					</span></label>
  				</td>
  			</tr>
@@ -89,7 +96,7 @@ $totalRows_RecordsetSumShoppingTrans = mysql_num_rows($RecordsetSumShoppingTrans
  				</td>
  				<td>
  					<label class="smallText dodgerblueText">Shopping : <span>
- 						<?php echo $row_RecordsetSumShoppingTrans['TOTALAMOUNT']; ?>
+ 						<?php echo 0.0 + $row_RecordsetSumShoppingTrans['TOTALAMOUNT']; ?>
  					</span></label>
  				</td>
  			</tr>
@@ -102,7 +109,9 @@ $totalRows_RecordsetSumShoppingTrans = mysql_num_rows($RecordsetSumShoppingTrans
  					<img src="assets/savings.png" width="75px">
  				</td>
  				<td>
- 					<label class="smallText dodgerblueText">Savings : <span>null</span></label>
+ 					<label class="smallText dodgerblueText">Savings : <span>
+ 						<?php echo 0.0 + $row_RecordsetSumSaving['TOTALSAVING']; ?>
+ 					</span></label>
  				</td>
  			</tr>
  		</table>
@@ -114,7 +123,7 @@ $totalRows_RecordsetSumShoppingTrans = mysql_num_rows($RecordsetSumShoppingTrans
  					<img src="assets/emergency.png" width="75px">
  				</td>
  				<td>
- 					<label class="smallText dodgerblueText">Emergency : <span>null</span></label>
+ 					<label class="smallText dodgerblueText">Emergency : <span>0.0</span></label>
  				</td>
  			</tr>
  		</table>
@@ -123,7 +132,7 @@ $totalRows_RecordsetSumShoppingTrans = mysql_num_rows($RecordsetSumShoppingTrans
  	<div class="scroll-table">
  	<div class="table-holder">
  		<div class="table-caption">
- 			<label class="largeText brownText">Recent Transactions : <span>null</span></label>
+ 			<label class="largeText brownText">Recent Transactions  <span></span></label>
  		</div>
  		<table>
  			<thead>
