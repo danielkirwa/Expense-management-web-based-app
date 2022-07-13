@@ -107,12 +107,12 @@ if (mysql_errno($expenceconn) > 0) {
 
   <center><input type="submit" value="Already have account Log in" class="mybuttontrans" /><cenetr>
 </div>
-<div>
+<div class="guide-section">
 	Guide app
 
 </div>
 
-		<div class="banner">
+		<div class="banner" id="footer">
 		<table>
  			<tr>
  				<td>

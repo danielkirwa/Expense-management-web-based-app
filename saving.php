@@ -92,7 +92,10 @@ $totalRows_RecordsetSumSaving = mysql_num_rows($RecordsetSumSaving);
 		<table>
  			<tr>
  				<td>
- 					<label class="largeText">My Expense saving</label>
+ 					 <a href="dashboard.php">
+            
+            <label class="largeText">My Expense</label>
+          </a>
  				</td>
  				<td>
  					<img src="assets/totalspent.png" width="75px" class="accountAvertor">

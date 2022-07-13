@@ -119,7 +119,10 @@ $queryString_RecordSetBill = sprintf("&totalRows_RecordSetBill=%d%s", $totalRows
 		<table>
  			<tr>
  				<td>
- 					<label class="largeText">My Expense</label>
+ 					 <a href="dashboard.php">
+            
+            <label class="largeText">My Expense</label>
+          </a>
  				</td>
  				<td>
  					<img src="assets/potrait.png" width="75px" class="accountAvertor">

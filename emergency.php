@@ -36,7 +36,7 @@
  				</div>
  				<div class="smallmargintop">
  					<center>
- 					<label class="largeText dodgerblueText">Manage your emergencies : <span>null</span></label> &nbsp;</center>
+ 					<label class="largeText dodgerblueText">Manage your emergencies</label> &nbsp;</center>
  					</div>
 <hr style="color: dodgerblue;">
  					<div>

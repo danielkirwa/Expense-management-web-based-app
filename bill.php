@@ -110,7 +110,11 @@ $queryString_RecordSetBillTransaction = sprintf("&totalRows_RecordSetBillTransac
 		<table>
  			<tr>
  				<td>
- 					<label class="largeText">My Expense</label>
+          <a href="dashboard.php">
+            
+            <label class="largeText">My Expense</label>
+          </a>
+ 					
  				</td>
  				<td>
  					<img src="assets/potrait.png" width="75px" class="accountAvertor">
@@ -167,8 +171,8 @@ $queryString_RecordSetBillTransaction = sprintf("&totalRows_RecordSetBillTransac
  					<th>Transaction ID</th>
  					<th>Bill Name</th>
  					<th>Date/Time</th>
- 					<th>Anount</th>
- 					<th>Satus</th>
+ 					<th>Amount</th>
+ 					<th>Status</th>
  					<th>Action</th>
  				</tr>
  			</thead>

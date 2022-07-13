@@ -91,7 +91,10 @@ $totalRows_RecordsetSumShoppingTrans = mysql_num_rows($RecordsetSumShoppingTrans
 		<table>
  			<tr>
  				<td>
- 					<label class="largeText">My Expense</label>
+ 					 <a href="dashboard.php">
+            
+            <label class="largeText">My Expense</label>
+          </a>
  				</td>
  				<td>
  					<img src="assets/totalspent.png" width="75px" class="accountAvertor">
