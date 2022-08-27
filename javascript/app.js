@@ -1,15 +1,35 @@
-const sign_in_btn = document.querySelector("#sign-in-btn");
-const sign_up_btn = document.querySelector("#tour-btn");
-const container = document.querySelector(".container");
-const btn_login = document.getElementById('btn-login');
+let btn_call_registraction = document.getElementById('btn_call_register');
+let btn_call_login = document.getElementById('btn_call_login');
 
-sign_up_btn.addEventListener("click", () => {
-  container.classList.add("sign-up-mode");
-});
+let register_page = document.getElementById('registration_form');
+let login_page = document.getElementById('login_form');
 
-sign_in_btn.addEventListener("click", () => {
-  container.classList.remove("sign-up-mode");
-});
-btn_login.addEventListener("click", () => {
-  window.location.href='admincontrol.html';
-});
+let visiblePage = 1;
+ 
+ localStorage.setItem('visiblePageNumber',1);
+
+ function ManagePages(argument) {
+   // body...
+   let activePage = localStorage.getItem('visiblePageNumber')
+   if (activePage == visiblePage) {
+    register_page.style.display = "none";
+    login_page.style.display = "block";
+
+   }else{
+    login_page.style.display = "none";
+    register_page.style.display = "block";
+   }
+ }
+ btn_call_login.addEventListener("click", () =>{
+  localStorage.setItem('visiblePageNumber',1);
+  ManagePages();
+ })
+ btn_call_registraction.addEventListener("click", () =>{
+  localStorage.setItem('visiblePageNumber',2);
+   ManagePages();
+ })
+
+
+
+
+ ManagePages();

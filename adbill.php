@@ -38,8 +38,7 @@ if (isset($_SERVER['QUERY_STRING'])) {
 }
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO bills (billID, billname, billdescription, dateofadd, userid) VALUES (%s, %s, %s, %s, %s)",
-                       GetSQLValueString($_POST['billID'], "int"),
+  $insertSQL = sprintf("INSERT INTO bills (billname, billdescription, dateofadd, userid) VALUES (%s, %s, %s, %s)",
                        GetSQLValueString($_POST['billname'], "text"),
                        GetSQLValueString($_POST['billdescription'], "text"),
                        GetSQLValueString($_POST['dateofadd'], "date"),
@@ -162,10 +161,7 @@ $queryString_RecordSetBill = sprintf("&totalRows_RecordSetBill=%d%s", $totalRows
  		
  		<form action="<?php echo $editFormAction; ?>" method="post" name="form1" id="form1">
   <table align="center">
-    <tr valign="baseline">
-
-      <td><input type="text" name="billID" value="" size="32" class="myinputtext" placeholder="Bill id" /></td>
-    </tr>
+    
     <tr valign="baseline">
 
       <td style="padding-top: 24px;"><input type="text" name="billname" value="" size="32" class="myinputtext" placeholder="Bill Name" /></td>

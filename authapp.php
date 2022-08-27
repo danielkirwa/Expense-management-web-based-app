@@ -43,23 +43,24 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
                        GetSQLValueString($_POST['userid'], "text"));
 
   mysql_select_db($database_expenceconn, $expenceconn);
-  $Result1 = mysql_query($insertSQL, $expenceconn);
-if (mysql_errno($expenceconn) > 0) {
-  // code...
-
-    if(mysql_errno($expenceconn) == 1062){
-      echo "<script>alert('duplicte');</script>";
-    }else{
-     echo "<script>alert('error occured');</script>"; 
-    }
-   
-}else if($Result1){
-   echo "<script>alert('sucess');</script>";
+  $Result1 = mysql_query($insertSQL, $expenceconn) or die(mysql_error());
 }
- 
+
+if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form2")) {
+  $insertSQL = sprintf("INSERT INTO persondetails (personID, surname, othername, phone, email, dateofbirth, gender, incomesourse) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
+                       GetSQLValueString($_POST['personID'], "int"),
+                       GetSQLValueString($_POST['surname'], "text"),
+                       GetSQLValueString($_POST['othername'], "text"),
+                       GetSQLValueString($_POST['phone'], "int"),
+                       GetSQLValueString($_POST['email'], "text"),
+                       GetSQLValueString($_POST['dateofbirth'], "date"),
+                       GetSQLValueString($_POST['gender'], "text"),
+                       GetSQLValueString($_POST['incomesourse'], "text"));
+
+  mysql_select_db($database_expenceconn, $expenceconn);
+  $Result1 = mysql_query($insertSQL, $expenceconn) or die(mysql_error());
 }
 ?>
-
 
 <!DOCTYPE html>
 <html>
@@ -85,33 +86,72 @@ if (mysql_errno($expenceconn) > 0) {
 	</div>
 	<br>
 
-	<div class="fullscreen">
+	<div class="fullscreen" id="login_form">
   <form action="<?php echo $editFormAction; ?>" method="post" name="form1" id="form1">
     <table align="center">
       <tr valign="baseline">
-        <td><input type="text" name="userusername" value="" size="32" class="myinputtext" placeholder="username" /></td>
+        <td><input type="text" name="username" value="" class="myinputtext" placeholder="username" /></td>
       </tr>
       <tr valign="baseline">
-        <td style="padding-top: 24px;"><input type="text" name="userpassword" value="" size="32" class="myinputtext" placeholder="password" /></td>
+        <td><input type="text" name="password" value="" class="myinputtext" placeholder="password" /></td>
       </tr>
       <tr valign="baseline">
-        <td style="padding-top: 24px;"><input type="text" name="userid" value="" size="32" class="myinputtext" placeholder="Confirm password" /></td>
-      </tr>
-      <tr valign="baseline">
-        <td style="padding-top: 24px;"><center><input type="submit" value="Register Now" class="mybutton" /><cenetr></td>
+        <td><center><input type="submit" value="Login Now" class="mybutton" /><cenetr></td>
       </tr>
     </table>
     <input type="hidden" name="MM_insert" value="form1" />
   </form>
   <p>&nbsp;</p>
 
-  <center><input type="submit" value="Already have account Log in" class="mybuttontrans" /><cenetr>
+ <!--  <center><input type="button" value="Do not have account" class="mybuttontrans" id="btn_call_register" /><cenetr> -->
 </div>
-<div class="guide-section">
-	Guide app
+<center><button class="mybuttontrans" id="btn_call_register" >Do not have account</button><cenetr>
 
+<div id="registration_form">
+   <form action="<?php echo $editFormAction; ?>" method="post" name="form2" id="form2">
+    <table align="center">
+      <tr valign="baseline">
+        <td><input type="text" name="personID" value="" class="myinputtext" placeholder="ID Number" /></td>
+      </tr>
+      <tr valign="baseline">
+        <td><input type="text" name="surname" value="" class="myinputtext" placeholder="First Name" /></td>
+      </tr>
+      <tr valign="baseline">
+        <td><input type="text" name="othername" value="" class="myinputtext" placeholder="Other Name" /></td>
+      </tr>
+      <tr valign="baseline">
+        <td><input type="text" name="phone" value="" class="myinputtext" placeholder="Phone number" /></td>
+      </tr>
+      <tr valign="baseline">
+        <td><input type="text" name="email" value="" class="myinputtext" placeholder="Email adrress"/></td>
+      </tr>
+      <tr valign="baseline">
+        <td><input type="date" name="dateofbirth" value="" class="myinputtext" placeholder="username"/></td>
+      </tr>
+      <tr valign="baseline">
+        <td><select name="gender" class="myoption">
+          <option>Select Gender</option>
+          <option>MALE</option>
+          <option>FEMALE</option>
+        </select></td>
+      </tr>
+      <tr valign="baseline">
+        <td><input type="text" name="incomesourse" value="" class="myinputtext" placeholder="Income source" /></td>
+      </tr>
+      <tr valign="baseline">
+        <td><input type="submit" value="Register now" class="mybutton" /></td>
+      </tr>
+    </table>
+    <input type="hidden" name="MM_insert" value="form2" />
+  </form>
+  <p>&nbsp;</p>
+  <center><input type="button" value="Already have an account" class="mybuttontrans" id="btn_call_login" /><cenetr>
 </div>
+<center>
+  <button class="mybuttontrans" id="btn_call_login" >Already have an account</button>
+</center>
 
+<br><br><br>
 		<div class="banner" id="footer">
 		<table>
  			<tr>
@@ -125,5 +165,6 @@ if (mysql_errno($expenceconn) > 0) {
  			</tr>
  		</table>
 	</div>
+  <script type="text/javascript" src="javascript/app.js"></script>
 </body>
 </html>

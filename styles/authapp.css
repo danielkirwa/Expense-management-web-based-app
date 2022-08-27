@@ -8,6 +8,8 @@
 	outline: none;
 	border: none;
 	min-width: 250px;
+	margin-top: 16px;
+
 }
 .mybuttontrans{
 	padding: 8px 6px;
@@ -36,6 +38,7 @@
 	outline: none;
 	border: none;
 	min-width: 250px;
+	margin-top: 16px;
 }
 .myoption{
 	padding: 8px 6px;
@@ -45,4 +48,5 @@
 	outline: none;
 	border: none;
 	min-width: 250px;
+	margin-top: 16px;
 }
