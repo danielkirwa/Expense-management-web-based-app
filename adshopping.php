@@ -1,5 +1,19 @@
 <?php require_once('Connections/expenceconn.php'); ?>
 <?php
+//initialize the session
+if (!isset($_SESSION)) {
+  session_start();
+}
+
+if ($_SESSION['accountid']) {
+  // code...
+ $currentUser =   $_SESSION['accountid'];
+}else{
+    header("Location:authapp.php");
+}
+
+?>
+<?php
 if (!function_exists("GetSQLValueString")) {
 function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
 {
@@ -30,7 +44,7 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
   return $theValue;
 }
 }
-$currentUser = "123";
+$currentUser = $_SESSION['accountid'];
 $currentPage = $_SERVER["PHP_SELF"];
 
 $editFormAction = $_SERVER['PHP_SELF'];
@@ -39,12 +53,11 @@ if (isset($_SERVER['QUERY_STRING'])) {
 }
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO shopping (shoppingID, shoppingname, shoppingdescription, shoopingdateadded, userid) VALUES (%s, %s, %s, %s, %s)",
-                       GetSQLValueString($_POST['shoppingID'], "int"),
+  $insertSQL = sprintf("INSERT INTO shopping (shoppingname, shoppingdescription, shoopingdateadded, pid) VALUES (%s, %s, %s, %s)",
                        GetSQLValueString($_POST['shoppingname'], "text"),
                        GetSQLValueString($_POST['shoppingdescription'], "text"),
                        GetSQLValueString($_POST['shoopingdateadded'], "date"),
-                       GetSQLValueString($_POST['userid'], "text"));
+                       GetSQLValueString($_POST['pid'], "text"));
 
   mysql_select_db($database_expenceconn, $expenceconn);
   $Result1 = mysql_query($insertSQL, $expenceconn) or die(mysql_error());
@@ -58,11 +71,11 @@ if (isset($_GET['pageNum_RecordSetShopping'])) {
 $startRow_RecordSetShopping = $pageNum_RecordSetShopping * $maxRows_RecordSetShopping;
 
 $colname_RecordSetShopping = "-1";
-if (isset($_GET['userid'])) {
-  $colname_RecordSetShopping = $_GET['userid'];
+if (isset($_GET['pid'])) {
+  $colname_RecordSetShopping = $_GET['pid'];
 }
 mysql_select_db($database_expenceconn, $expenceconn);
-$query_RecordSetShopping = sprintf("SELECT shoppingID, shoppingname, shoppingdescription, shoopingdateadded FROM shopping WHERE userid = %s ORDER BY shoopingdateadded DESC",GetSQLValueString($currentUser, "int"));
+$query_RecordSetShopping = sprintf("SELECT shoppingID, shoppingname, shoppingdescription, shoopingdateadded FROM shopping  WHERE pid = '{$currentUser}' ORDER BY shoopingdateadded DESC");
   
 $query_limit_RecordSetShopping = sprintf("%s LIMIT %d, %d", $query_RecordSetShopping, $startRow_RecordSetShopping, $maxRows_RecordSetShopping);
 $RecordSetShopping = mysql_query($query_limit_RecordSetShopping, $expenceconn) or die(mysql_error());
@@ -135,7 +148,7 @@ $queryString_RecordSetShopping = sprintf("&totalRows_RecordSetShopping=%d%s", $t
  				</div>
  				<div class="smallmargintop">
  					<center>
- 					<label class="largeText dodgerblueText">Add your shopping : <span>null</span></label> &nbsp;</center>
+ 					<label class="largeText dodgerblueText">All Shopping : <span><?php echo $totalRows_RecordSetShopping ?></span></label> &nbsp;</center>
  					</div>
 <hr style="color: dodgerblue;">
  					
@@ -148,9 +161,6 @@ $queryString_RecordSetShopping = sprintf("&totalRows_RecordSetShopping=%d%s", $t
 <form action="<?php echo $editFormAction; ?>" method="post" name="form1" id="form1">
   <table align="center">
     <tr valign="baseline">
-      <td style="padding-top: 24px;"><input type="text" name="shoppingID" value="" size="32" placeholder="Shopping ID" class="myinputtext"/></td>
-    </tr>
-    <tr valign="baseline">
       <td style="padding-top: 24px;"><input type="text" name="shoppingname" value="" size="32" placeholder="Shopping name" class="myinputtext"/></td>
     </tr>
     <tr valign="baseline">
@@ -160,7 +170,7 @@ $queryString_RecordSetShopping = sprintf("&totalRows_RecordSetShopping=%d%s", $t
       <td style="padding-top: 24px;"><input type="date" name="shoopingdateadded" value="" size="32" class="myinputtext"/></td>
     </tr>
     <tr valign="baseline">
-      <td style="padding-top: 24px;"><input type="text" name="userid" value="" size="32" placeholder="User id" class="myinputtext"/></td>
+      <td style="padding-top: 24px;"><input type="text" name="pid" value="<?php echo $_SESSION['accountid'] ?>" size="32" placeholder="User id" class="myinputtext"/></td>
     </tr>
     <tr valign="baseline">
       
@@ -202,23 +212,7 @@ $queryString_RecordSetShopping = sprintf("&totalRows_RecordSetShopping=%d%s", $t
     
  		</table>
       <br />
-  <table border="0">
-    <tr>
-      <td><?php if ($pageNum_RecordSetShopping > 0) { // Show if not first page ?>
-          <a href="<?php printf("%s?pageNum_RecordSetShopping=%d%s", $currentPage, 0, $queryString_RecordSetShopping); ?>">First</a>
-          <?php } // Show if not first page ?></td>
-      <td><?php if ($pageNum_RecordSetShopping > 0) { // Show if not first page ?>
-          <a href="<?php printf("%s?pageNum_RecordSetShopping=%d%s", $currentPage, max(0, $pageNum_RecordSetShopping - 1), $queryString_RecordSetShopping); ?>">Previous</a>
-          <?php } // Show if not first page ?></td>
-      <td><?php if ($pageNum_RecordSetShopping < $totalPages_RecordSetShopping) { // Show if not last page ?>
-          <a href="<?php printf("%s?pageNum_RecordSetShopping=%d%s", $currentPage, min($totalPages_RecordSetShopping, $pageNum_RecordSetShopping + 1), $queryString_RecordSetShopping); ?>">Next</a>
-          <?php } // Show if not last page ?></td>
-      <td><?php if ($pageNum_RecordSetShopping < $totalPages_RecordSetShopping) { // Show if not last page ?>
-          <a href="<?php printf("%s?pageNum_RecordSetShopping=%d%s", $currentPage, $totalPages_RecordSetShopping, $queryString_RecordSetShopping); ?>">Last</a>
-          <?php } // Show if not last page ?></td>
-    </tr>
-  </table>
-Records <?php echo ($startRow_RecordSetShopping + 1) ?> to <?php echo min($startRow_RecordSetShopping + $maxRows_RecordSetShopping, $totalRows_RecordSetShopping) ?> of <?php echo $totalRows_RecordSetShopping ?></div>
+  </div>
 </div>
        
 

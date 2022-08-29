@@ -1,5 +1,19 @@
 <?php require_once('Connections/expenceconn.php'); ?>
 <?php
+//initialize the session
+if (!isset($_SESSION)) {
+  session_start();
+}
+
+if ($_SESSION['accountid']) {
+  // code...
+ $currentUser =   $_SESSION['accountid'];
+}else{
+    header("Location:authapp.php");
+}
+
+?>
+<?php
 if (!function_exists("GetSQLValueString")) {
 function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
 {

@@ -1,5 +1,19 @@
 <?php require_once('Connections/expenceconn.php'); ?>
 <?php
+//initialize the session
+if (!isset($_SESSION)) {
+  session_start();
+}
+
+if ($_SESSION['accountid']) {
+  // code...
+ $currentUser =   $_SESSION['accountid'];
+}else{
+    header("Location:authapp.php");
+}
+
+?>
+<?php
 if (!function_exists("GetSQLValueString")) {
 function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
 {
@@ -38,11 +52,11 @@ if (isset($_SERVER['QUERY_STRING'])) {
 }
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO bills (billname, billdescription, dateofadd, userid) VALUES (%s, %s, %s, %s)",
+  $insertSQL = sprintf("INSERT INTO bills (billname, billdescription, dateofadd, pid) VALUES (%s, %s, %s, %s)",
                        GetSQLValueString($_POST['billname'], "text"),
                        GetSQLValueString($_POST['billdescription'], "text"),
                        GetSQLValueString($_POST['dateofadd'], "date"),
-                       GetSQLValueString($_POST['userid'], "text"));
+                       GetSQLValueString($_POST['pid'], "text"));
 
   mysql_select_db($database_expenceconn, $expenceconn);
  $Result1 = mysql_query($insertSQL, $expenceconn);
@@ -52,6 +66,8 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
     if(mysql_errno($expenceconn) == 1062){
       echo "<script>alert('duplicte');</script>";
     }else{
+    print(mysql_errno($expenceconn) );
+
      echo "<script>alert('error occured');</script>"; 
     }
    
@@ -71,7 +87,7 @@ if (isset($_GET['pageNum_RecordSetBill'])) {
 $startRow_RecordSetBill = $pageNum_RecordSetBill * $maxRows_RecordSetBill;
 
 mysql_select_db($database_expenceconn, $expenceconn);
-$query_RecordSetBill = "SELECT billID, billname, billdescription, dateofadd FROM bills ORDER BY dateofadd DESC";
+$query_RecordSetBill = "SELECT billID, billname, billdescription, dateofadd FROM bills WHERE pid = '{$currentUser}' ORDER BY dateofadd DESC";
 $query_limit_RecordSetBill = sprintf("%s LIMIT %d, %d", $query_RecordSetBill, $startRow_RecordSetBill, $maxRows_RecordSetBill);
 $RecordSetBill = mysql_query($query_limit_RecordSetBill, $expenceconn) or die(mysql_error());
 $row_RecordSetBill = mysql_fetch_assoc($RecordSetBill);
@@ -176,7 +192,7 @@ $queryString_RecordSetBill = sprintf("&totalRows_RecordSetBill=%d%s", $totalRows
     </tr>
     <tr valign="baseline">
       
-      <td style="padding-top: 24px;"><input type="text" name="userid" value="" size="32" class="myinputtext" placeholder="User id" /></td>
+      <td style="padding-top: 24px;"><input type="text" name="pid" value="<?php echo $_SESSION['accountid'] ?>" size="32" class="myinputtext" placeholder="User id" /></td>
     </tr>
     <tr valign="baseline">
      
@@ -218,23 +234,7 @@ $queryString_RecordSetBill = sprintf("&totalRows_RecordSetBill=%d%s", $totalRows
      </tr>
  			</tbody>
  		</table>
- <table border="0">
-    <tr>
-      <td><?php if ($pageNum_RecordSetBill > 0) { // Show if not first page ?>
-          <a href="<?php printf("%s?pageNum_RecordSetBill=%d%s", $currentPage, 0, $queryString_RecordSetBill); ?>">First</a>
-          <?php } // Show if not first page ?></td>
-      <td><?php if ($pageNum_RecordSetBill > 0) { // Show if not first page ?>
-          <a href="<?php printf("%s?pageNum_RecordSetBill=%d%s", $currentPage, max(0, $pageNum_RecordSetBill - 1), $queryString_RecordSetBill); ?>">Previous</a>
-          <?php } // Show if not first page ?></td>
-      <td><?php if ($pageNum_RecordSetBill < $totalPages_RecordSetBill) { // Show if not last page ?>
-          <a href="<?php printf("%s?pageNum_RecordSetBill=%d%s", $currentPage, min($totalPages_RecordSetBill, $pageNum_RecordSetBill + 1), $queryString_RecordSetBill); ?>">Next</a>
-          <?php } // Show if not last page ?></td>
-      <td><?php if ($pageNum_RecordSetBill < $totalPages_RecordSetBill) { // Show if not last page ?>
-          <a href="<?php printf("%s?pageNum_RecordSetBill=%d%s", $currentPage, $totalPages_RecordSetBill, $queryString_RecordSetBill); ?>">Last</a>
-          <?php } // Show if not last page ?></td>
-    </tr>
-  </table>
-Records <?php echo ($startRow_RecordSetBill + 1) ?> to <?php echo min($startRow_RecordSetBill + $maxRows_RecordSetBill, $totalRows_RecordSetBill) ?> of <?php echo $totalRows_RecordSetBill ?></div>
+</div>
        
 
  	</div>

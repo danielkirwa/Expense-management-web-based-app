@@ -1,5 +1,19 @@
 <?php require_once('Connections/expenceconn.php'); ?>
 <?php
+//initialize the session
+if (!isset($_SESSION)) {
+  session_start();
+}
+
+if ($_SESSION['accountid']) {
+  // code...
+ $currentUser =   $_SESSION['accountid'];
+}else{
+    header("Location:authapp.php");
+}
+
+?>
+<?php
 if (!function_exists("GetSQLValueString")) {
 function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
 {
@@ -30,7 +44,7 @@ function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDe
   return $theValue;
 }
 }
-$currentUser = 123;
+$currentUser = $_SESSION['accountid'];
 $currentPage = $_SERVER["PHP_SELF"];
 
 $editFormAction = $_SERVER['PHP_SELF'];
@@ -39,14 +53,13 @@ if (isset($_SERVER['QUERY_STRING'])) {
 }
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO savings (savingID, savingpurpose, savingtarget, savingdateoppened, savingdateclosed, savingname, userid) VALUES (%s, %s, %s, %s, %s, %s, %s)",
-                       GetSQLValueString($_POST['savingID'], "int"),
+  $insertSQL = sprintf("INSERT INTO savings (savingpurpose, savingtarget, savingdateoppened, savingdateclosed, savingname, pid) VALUES (%s, %s, %s, %s, %s, %s)",
                        GetSQLValueString($_POST['savingpurpose'], "text"),
                        GetSQLValueString($_POST['savingtarget'], "text"),
                        GetSQLValueString($_POST['savingdateoppened'], "date"),
                        GetSQLValueString($_POST['savingdateclosed'], "date"),
                        GetSQLValueString($_POST['savingname'], "text"),
-                       GetSQLValueString($_POST['userid'], "text"));
+                       GetSQLValueString($_POST['pid'], "text"));
 
   mysql_select_db($database_expenceconn, $expenceconn);
   $Result1 = mysql_query($insertSQL, $expenceconn) or die(mysql_error());
@@ -60,11 +73,11 @@ if (isset($_GET['pageNum_RecordSetSaving'])) {
 $startRow_RecordSetSaving = $pageNum_RecordSetSaving * $maxRows_RecordSetSaving;
 
 $colname_RecordSetSaving = "-1";
-if (isset($_GET['userid'])) {
-  $colname_RecordSetSaving = $_GET['userid'];
+if (isset($_GET['pid'])) {
+  $colname_RecordSetSaving = $_GET['pid'];
 }
 mysql_select_db($database_expenceconn, $expenceconn);
-$query_RecordSetSaving = sprintf("SELECT savingID, savingpurpose, savingtarget, savingdateclosed, savingname FROM savings WHERE userid = %s ORDER BY savingdateclosed ASC", GetSQLValueString($currentUser, "int"));
+$query_RecordSetSaving = sprintf("SELECT savingID, savingpurpose, savingtarget, savingdateclosed, savingname FROM savings WHERE pid = '{$currentUser}' ORDER BY savingdateclosed ASC", GetSQLValueString($currentUser, "int"));
 $query_limit_RecordSetSaving = sprintf("%s LIMIT %d, %d", $query_RecordSetSaving, $startRow_RecordSetSaving, $maxRows_RecordSetSaving);
 $RecordSetSaving = mysql_query($query_limit_RecordSetSaving, $expenceconn) or die(mysql_error());
 $row_RecordSetSaving = mysql_fetch_assoc($RecordSetSaving);
@@ -135,7 +148,7 @@ $queryString_RecordSetSaving = sprintf("&totalRows_RecordSetSaving=%d%s", $total
  				</div>
  				<div class="smallmargintop">
  					<center>
- 					<label class="largeText dodgerblueText">Add your saving : <span>null</span></label> &nbsp;</center>
+ 					<label class="largeText dodgerblueText">ALl saving : <span><?php echo $totalRows_RecordSetSaving ?></span></label> &nbsp;</center>
  					</div>
 <hr style="color: dodgerblue;">	
  	</div>
@@ -143,9 +156,7 @@ $queryString_RecordSetSaving = sprintf("&totalRows_RecordSetSaving=%d%s", $total
 
 <form action="<?php echo $editFormAction; ?>" method="post" name="form1" id="form1">
   <table align="center">
-    <tr valign="baseline">
-      <td style="padding-top: 24px;"><input type="text" name="savingID" value="" size="32" class="myinputtext" /></td>
-    </tr>
+    
     <tr valign="baseline">
       <td style="padding-top: 24px;"><input type="text" name="savingpurpose" value="" size="32"  class="myinputtext" placeholder="Description" /></td>
     </tr>
@@ -162,7 +173,7 @@ $queryString_RecordSetSaving = sprintf("&totalRows_RecordSetSaving=%d%s", $total
       <td style="padding-top: 24px;"><input type="text" name="savingname" value="" size="32"  class="myinputtext" placeholder="name" /></td>
     </tr>
     <tr valign="baseline">
-      <td style="padding-top: 24px;"><input type="text" name="userid" value="" size="32"  class="myinputtext" placeholder="userid" /></td>
+      <td style="padding-top: 24px;"><input type="text" name="pid" value="<?php echo $_SESSION['accountid'] ?>" size="32"  class="myinputtext" placeholder="pid" /></td>
     </tr>
     <tr valign="baseline">
       <td style="padding-top: 24px;"><center><input type="submit" value="Add Saving" class="mybutton" /></center></td>
@@ -204,23 +215,7 @@ $queryString_RecordSetSaving = sprintf("&totalRows_RecordSetSaving=%d%s", $total
       <?php } while ($row_RecordSetSaving = mysql_fetch_assoc($RecordSetSaving)); ?>
     </tbody>
  		</table>
- 		<table border="0">
-    <tr>
-      <td><?php if ($pageNum_RecordSetSaving > 0) { // Show if not first page ?>
-          <a href="<?php printf("%s?pageNum_RecordSetSaving=%d%s", $currentPage, 0, $queryString_RecordSetSaving); ?>">First</a>
-          <?php } // Show if not first page ?></td>
-      <td><?php if ($pageNum_RecordSetSaving > 0) { // Show if not first page ?>
-          <a href="<?php printf("%s?pageNum_RecordSetSaving=%d%s", $currentPage, max(0, $pageNum_RecordSetSaving - 1), $queryString_RecordSetSaving); ?>">Previous</a>
-          <?php } // Show if not first page ?></td>
-      <td><?php if ($pageNum_RecordSetSaving < $totalPages_RecordSetSaving) { // Show if not last page ?>
-          <a href="<?php printf("%s?pageNum_RecordSetSaving=%d%s", $currentPage, min($totalPages_RecordSetSaving, $pageNum_RecordSetSaving + 1), $queryString_RecordSetSaving); ?>">Next</a>
-          <?php } // Show if not last page ?></td>
-      <td><?php if ($pageNum_RecordSetSaving < $totalPages_RecordSetSaving) { // Show if not last page ?>
-          <a href="<?php printf("%s?pageNum_RecordSetSaving=%d%s", $currentPage, $totalPages_RecordSetSaving, $queryString_RecordSetSaving); ?>">Last</a>
-          <?php } // Show if not last page ?></td>
-    </tr>
-  </table>
-Records <?php echo ($startRow_RecordSetSaving + 1) ?> to <?php echo min($startRow_RecordSetSaving + $maxRows_RecordSetSaving, $totalRows_RecordSetSaving) ?> of <?php echo $totalRows_RecordSetSaving ?>
+ 		
       <br />
   </div>
 </div>

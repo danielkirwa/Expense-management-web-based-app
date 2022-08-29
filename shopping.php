@@ -1,5 +1,19 @@
 <?php require_once('Connections/expenceconn.php'); ?>
 <?php
+//initialize the session
+if (!isset($_SESSION)) {
+  session_start();
+}
+
+if ($_SESSION['accountid']) {
+  // code...
+ $currentUser =   $_SESSION['accountid'];
+}else{
+    header("Location:authapp.php");
+}
+
+?>
+<?php
 if (!function_exists("GetSQLValueString")) {
 function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
 {
@@ -37,8 +51,7 @@ if (isset($_SERVER['QUERY_STRING'])) {
 }
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO shoppingtransaction (shoppingtransactionID, shoppingtransactionamount, shoppingtransactiondate, status, shoppingID) VALUES (%s, %s, %s, %s, %s)",
-                       GetSQLValueString($_POST['shoppingtransactionID'], "int"),
+  $insertSQL = sprintf("INSERT INTO shoppingtransaction (shoppingtransactionamount, shoppingtransactiondate, status, shoppingID) VALUES (%s, %s, %s, %s)",
                        GetSQLValueString($_POST['shoppingtransactionamount'], "int"),
                        GetSQLValueString($_POST['shoppingtransactiondate'], "date"),
                        GetSQLValueString($_POST['status'], "text"),
@@ -74,6 +87,14 @@ $query_RecordsetSumShoppingTrans = "SELECT SUM( shoppingtransaction.shoppingtran
 $RecordsetSumShoppingTrans = mysql_query($query_RecordsetSumShoppingTrans, $expenceconn) or die(mysql_error());
 $row_RecordsetSumShoppingTrans = mysql_fetch_assoc($RecordsetSumShoppingTrans);
 $totalRows_RecordsetSumShoppingTrans = mysql_num_rows($RecordsetSumShoppingTrans);
+
+
+mysql_select_db($database_expenceconn, $expenceconn);
+$query_cmbShopping = "SELECT shopping.shoppingID, shopping.shoppingname FROM shopping WHERE shopping.pid = 987456";
+$cmbShopping = mysql_query($query_cmbShopping, $expenceconn) or die(mysql_error());
+$row_cmbShopping = mysql_fetch_assoc($cmbShopping);
+$totalRows_cmbShopping = mysql_num_rows($cmbShopping);
+
 ?>
 
 <!DOCTYPE html>
@@ -181,9 +202,7 @@ $totalRows_RecordsetSumShoppingTrans = mysql_num_rows($RecordsetSumShoppingTrans
 	<!-- popup form for transaction form-->
 	<form action="<?php echo $editFormAction; ?>" method="post" name="form1" id="form1">
     <table align="center">
-      <tr valign="baseline">
-        <td><input type="text" name="shoppingtransactionID" value="" size="32" class="myinputtext" placeholder="Transaction ID" /></td>
-      </tr>
+     
       <tr valign="baseline">
         <td><input type="text" name="shoppingtransactionamount" value="" size="32" class="myinputtext" placeholder="Amount" /></td>
       </tr>
@@ -194,7 +213,22 @@ $totalRows_RecordsetSumShoppingTrans = mysql_num_rows($RecordsetSumShoppingTrans
         <td><input type="text" name="status" value="" size="32" class="myinputtext" placeholder="status" /></td>
       </tr>
       <tr valign="baseline">
-        <td><input type="text" name="shoppingID" value="" size="32" class="myinputtext" placeholder="shopping ID" /></td>
+        <td>
+           <select name="shoppingID" class="myoption">
+            <?php
+do {  
+?>
+            <option value="<?php echo $row_cmbShopping['shoppingID']?>"<?php if (!(strcmp($row_cmbShopping['shoppingID'], $row_cmbShopping['shoppingID']))) {echo "selected=\"selected\"";} ?>><?php echo $row_cmbShopping['shoppingname']?></option>
+            <?php
+} while ($row_cmbShopping = mysql_fetch_assoc($cmbShopping));
+  $rows = mysql_num_rows($cmbShopping);
+  if($rows > 0) {
+      mysql_data_seek($cmbShopping, 0);
+    $row_cmbShopping = mysql_fetch_assoc($cmbShopping);
+  }
+?>
+          </select>
+        </td>
       </tr>
       <tr valign="baseline">
         <td><center><input type="submit" value="Add new transaction" class="mybutton" /></center></td>
@@ -245,4 +279,5 @@ closeanalysis.addEventListener('click' , () =>{
 <?php
 mysql_free_result($RecordSetShoppingTransaction);
 mysql_free_result($RecordsetSumShoppingTrans);
+mysql_free_result($cmbShopping);
 ?>

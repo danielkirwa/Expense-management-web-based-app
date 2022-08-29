@@ -36,30 +36,38 @@ if (isset($_SERVER['QUERY_STRING'])) {
   $editFormAction .= "?" . htmlentities($_SERVER['QUERY_STRING']);
 }
 
-if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO users (userusername, userpassword, userid) VALUES (%s, %s, %s)",
-                       GetSQLValueString($_POST['userusername'], "text"),
-                       GetSQLValueString($_POST['userpassword'], "text"),
-                       GetSQLValueString($_POST['userid'], "text"));
 
-  mysql_select_db($database_expenceconn, $expenceconn);
-  $Result1 = mysql_query($insertSQL, $expenceconn) or die(mysql_error());
+?>
+<?php
+// *** Validate request to login to this site.
+  session_start();
+if(isset($_POST['btnlogin'])){
+  $username = $_POST['username'];
+  $password = $_POST['password'];
+
+  $query="SELECT userusername,pid FROM users WHERE userusername='$username' AND userpassword='$password'"; 
+   $check=mysql_query($query);
+   $num_rows=mysql_num_rows($check);
+
+  if($num_rows){
+   $row=mysql_fetch_assoc($check);
+  $_SESSION['username'] = $row['userusername'];
+  $_SESSION['accountid'] = $row['pid'];
+   
+   if($_SESSION['accountid']){
+   header("Refresh:1; url=dashboard.php");
+
+  }else{
+    echo '<script>alert("Invalid login details")</script>';
+  }
+
+  }
+
+
 }
 
-if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form2")) {
-  $insertSQL = sprintf("INSERT INTO persondetails (personID, surname, othername, phone, email, dateofbirth, gender, incomesourse) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
-                       GetSQLValueString($_POST['personID'], "int"),
-                       GetSQLValueString($_POST['surname'], "text"),
-                       GetSQLValueString($_POST['othername'], "text"),
-                       GetSQLValueString($_POST['phone'], "int"),
-                       GetSQLValueString($_POST['email'], "text"),
-                       GetSQLValueString($_POST['dateofbirth'], "date"),
-                       GetSQLValueString($_POST['gender'], "text"),
-                       GetSQLValueString($_POST['incomesourse'], "text"));
 
-  mysql_select_db($database_expenceconn, $expenceconn);
-  $Result1 = mysql_query($insertSQL, $expenceconn) or die(mysql_error());
-}
+
 ?>
 
 <!DOCTYPE html>
@@ -75,7 +83,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form2")) {
 		<table>
  			<tr>
  				<td>
- 					<label  class="largeText">My Expence</label>
+ 					<label  class="largeText">My Expense</label>
  				</td>
  				<td>
  					<img src="assets/totalspent.png" width="75px" class="accountAvertor">
@@ -96,60 +104,15 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form2")) {
         <td><input type="text" name="password" value="" class="myinputtext" placeholder="password" /></td>
       </tr>
       <tr valign="baseline">
-        <td><center><input type="submit" value="Login Now" class="mybutton" /><cenetr></td>
+        <td><center><input type="submit" name="btnlogin" value="Login Now" class="mybutton" /><cenetr></td>
       </tr>
     </table>
     <input type="hidden" name="MM_insert" value="form1" />
   </form>
   <p>&nbsp;</p>
-
- <!--  <center><input type="button" value="Do not have account" class="mybuttontrans" id="btn_call_register" /><cenetr> -->
+<center><input type="button" value="Register Account" class="mybuttontrans" name="btn_call_login" /><cenetr>
 </div>
-<center><button class="mybuttontrans" id="btn_call_register" >Do not have account</button><cenetr>
 
-<div id="registration_form">
-   <form action="<?php echo $editFormAction; ?>" method="post" name="form2" id="form2">
-    <table align="center">
-      <tr valign="baseline">
-        <td><input type="text" name="personID" value="" class="myinputtext" placeholder="ID Number" /></td>
-      </tr>
-      <tr valign="baseline">
-        <td><input type="text" name="surname" value="" class="myinputtext" placeholder="First Name" /></td>
-      </tr>
-      <tr valign="baseline">
-        <td><input type="text" name="othername" value="" class="myinputtext" placeholder="Other Name" /></td>
-      </tr>
-      <tr valign="baseline">
-        <td><input type="text" name="phone" value="" class="myinputtext" placeholder="Phone number" /></td>
-      </tr>
-      <tr valign="baseline">
-        <td><input type="text" name="email" value="" class="myinputtext" placeholder="Email adrress"/></td>
-      </tr>
-      <tr valign="baseline">
-        <td><input type="date" name="dateofbirth" value="" class="myinputtext" placeholder="username"/></td>
-      </tr>
-      <tr valign="baseline">
-        <td><select name="gender" class="myoption">
-          <option>Select Gender</option>
-          <option>MALE</option>
-          <option>FEMALE</option>
-        </select></td>
-      </tr>
-      <tr valign="baseline">
-        <td><input type="text" name="incomesourse" value="" class="myinputtext" placeholder="Income source" /></td>
-      </tr>
-      <tr valign="baseline">
-        <td><input type="submit" value="Register now" class="mybutton" /></td>
-      </tr>
-    </table>
-    <input type="hidden" name="MM_insert" value="form2" />
-  </form>
-  <p>&nbsp;</p>
-  <center><input type="button" value="Already have an account" class="mybuttontrans" id="btn_call_login" /><cenetr>
-</div>
-<center>
-  <button class="mybuttontrans" id="btn_call_login" >Already have an account</button>
-</center>
 
 <br><br><br>
 		<div class="banner" id="footer">

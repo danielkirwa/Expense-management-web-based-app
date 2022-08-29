@@ -1,5 +1,20 @@
 <?php require_once('Connections/expenceconn.php'); ?>
 <?php
+//initialize the session
+if (!isset($_SESSION)) {
+  session_start();
+}
+
+if ($_SESSION['accountid']) {
+  // code...
+ $currentUser =   $_SESSION['accountid'];
+}else{
+    header("Location:authapp.php");
+}
+
+?>
+
+<?php
 
 
 
@@ -46,10 +61,11 @@ $totalRows_RecordsetSumSaving = mysql_num_rows($RecordsetSumSaving);
 		<table>
  			<tr>
  				<td>
- 					<label class="largeText">My Expence</label>
+ 					<label class="largeText">My Expense</label>
  				</td>
  				<td>
  					<img src="assets/totalspent.png" width="75px" class="accountAvertor">
+ 					<label><?php echo $_SESSION['username']; ?></label>
  				</td>
  				
  			</tr>

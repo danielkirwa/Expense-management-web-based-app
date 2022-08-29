@@ -1,5 +1,19 @@
 <?php require_once('Connections/expenceconn.php'); ?>
 <?php
+//initialize the session
+if (!isset($_SESSION)) {
+  session_start();
+}
+
+if ($_SESSION['accountid']) {
+  // code...
+ $currentUser =   $_SESSION['accountid'];
+}else{
+    header("Location:authapp.php");
+}
+
+?>
+<?php
 if (!function_exists("GetSQLValueString")) {
 function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
 {
@@ -75,6 +89,15 @@ $query_RecordsetTransAmount = "SELECT SUM(billstransaction.billtrasactionamount)
 $RecordsetTransAmount = mysql_query($query_RecordsetTransAmount, $expenceconn) or die(mysql_error());
 $row_RecordsetTransAmount = mysql_fetch_assoc($RecordsetTransAmount);
 $totalRows_RecordsetTransAmount = mysql_num_rows($RecordsetTransAmount);
+
+
+
+mysql_select_db($database_expenceconn, $expenceconn);
+$query_cmbBills = "SELECT bills.billID, bills.billname FROM bills WHERE bills.pid = '{$currentUser}' ";
+$cmbBills = mysql_query($query_cmbBills, $expenceconn) or die(mysql_error());
+$row_cmbBills = mysql_fetch_assoc($cmbBills);
+$totalRows_cmbBills = mysql_num_rows($cmbBills);
+
 
 //END OF TOTAL AMOUNT
 
@@ -213,7 +236,21 @@ $queryString_RecordSetBillTransaction = sprintf("&totalRows_RecordSetBillTransac
       <td><input type="text" name="billtrasactionstatus" value="" size="32" class="myinputtext" placeholder="status" /></td>
     </tr>
     <tr valign="baseline">
-      <td><input type="text" name="billID" value="" size="32" class="myinputtext" placeholder="bill id" /></td>
+      <td><select  name="billID" class="myoption">
+         <?php
+do {  
+?>
+         <option value="<?php echo $row_cmbBills['billID']?>"<?php if (!(strcmp($row_cmbBills['billID'], $row_cmbBills['billID']))) {echo "selected=\"selected\"";} ?>><?php echo $row_cmbBills['billname']?></option>
+         <?php
+} while ($row_cmbBills = mysql_fetch_assoc($cmbBills));
+  $rows = mysql_num_rows($cmbBills);
+  if($rows > 0) {
+      mysql_data_seek($cmbBills, 0);
+    $row_cmbBills = mysql_fetch_assoc($cmbBills);
+  }
+?>
+       </select>
+     </td>
     </tr>
     <tr valign="baseline">
       <td><center><input type="submit" value="Add new Transaction" class="mybutton" /></center></td>
@@ -268,4 +305,5 @@ closeanalysis.addEventListener('click' , () =>{
 <?php
 mysql_free_result($RecordSetBillTransaction);
 mysql_free_result($RecordsetTransAmount);
+mysql_free_result($cmbBills);
 ?>
