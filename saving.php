@@ -51,8 +51,7 @@ if (isset($_SERVER['QUERY_STRING'])) {
 }
 
 if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form1")) {
-  $insertSQL = sprintf("INSERT INTO savingtransaction (savingtransactionid, savingtransactiondat, savingtransactionamount, savingtransactionsatus, savingID) VALUES (%s, %s, %s, %s, %s)",
-                       GetSQLValueString($_POST['savingtransactionid'], "int"),
+  $insertSQL = sprintf("INSERT INTO savingtransaction (savingtransactiondat, savingtransactionamount, savingtransactionsatus, savingID) VALUES (%s, %s, %s, %s)",
                        GetSQLValueString($_POST['savingtransactiondat'], "date"),
                        GetSQLValueString($_POST['savingtransactionamount'], "text"),
                        GetSQLValueString($_POST['savingtransactionsatus'], "text"),
@@ -88,6 +87,14 @@ $query_RecordsetSumSaving = "SELECT SUM(savingtransaction.savingtransactionamoun
 $RecordsetSumSaving = mysql_query($query_RecordsetSumSaving, $expenceconn) or die(mysql_error());
 $row_RecordsetSumSaving = mysql_fetch_assoc($RecordsetSumSaving);
 $totalRows_RecordsetSumSaving = mysql_num_rows($RecordsetSumSaving);
+
+
+mysql_select_db($database_expenceconn, $expenceconn);
+$query_cmbsaving = "SELECT savings.savingID, savings.savingname FROM savings WHERE savings.pid = '{$currentUser}'";
+$cmbsaving = mysql_query($query_cmbsaving, $expenceconn) or die(mysql_error());
+$row_cmbsaving = mysql_fetch_assoc($cmbsaving);
+$totalRows_cmbsaving = mysql_num_rows($cmbsaving);
+
 ?>
 
 
@@ -99,6 +106,7 @@ $totalRows_RecordsetSumSaving = mysql_num_rows($RecordsetSumSaving);
 	<link rel="stylesheet" type="text/css" href="styles/banner.css">
 	<link rel="stylesheet" type="text/css" href="styles/shopping.css">
 	<link rel="stylesheet" type="text/css" href="styles/popuptransaction.css">
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 </head>
 <body>
 	<div class="mybody">
@@ -118,7 +126,33 @@ $totalRows_RecordsetSumSaving = mysql_num_rows($RecordsetSumSaving);
  			</tr>
  		</table>
 	</div>
-	<br>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container-fluid">
+    <!-- <a class="navbar-brand" href="#">Username</a> -->
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <?php echo $_SESSION['username'] ?>
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="userprofile.php">Profile</a></li>
+            <li><a class="dropdown-item" href="usermanual.php">User manual</a></li>
+            <li><a class="dropdown-item" href="logout.php">Logout</a></li>
+          </ul>
+        </li>
+
+        
+      </ul>
+ 
+    </div>
+  </div>
+</nav>
+<br><br>
 	<center>
 		<h2 class="dodgerblueText">Your saving manager</h2>
 	</center>
@@ -193,9 +227,7 @@ $totalRows_RecordsetSumSaving = mysql_num_rows($RecordsetSumSaving);
 <!-- transaction form -->
 <form action="<?php echo $editFormAction; ?>" method="post" name="form1" id="form1">
   <table align="center">
-    <tr valign="baseline">
-      <td><input type="text" name="savingtransactionid" value="" size="32" class="myinputtext" placeholder="Transaction ID" /></td>
-    </tr>
+    
     <tr valign="baseline">
       <td><input type="date" name="savingtransactiondat" value="" size="32" class="myinputtext"  /></td>
     </tr>
@@ -206,7 +238,22 @@ $totalRows_RecordsetSumSaving = mysql_num_rows($RecordsetSumSaving);
       <td><input type="text" name="savingtransactionsatus" value="" size="32" class="myinputtext" placeholder="Status" /></td>
     </tr>
     <tr valign="baseline">
-      <td><input type="text" name="savingID" value="" size="32" class="myinputtext" placeholder="Saving ID" /></td>
+      <td>
+         <select name="savingID" class="myoption">
+            <?php
+do {  
+?>
+            <option value="<?php echo $row_cmbsaving['savingID']?>"<?php if (!(strcmp($row_cmbsaving['savingID'], $row_cmbsaving['savingID']))) {echo "selected=\"selected\"";} ?>><?php echo $row_cmbsaving['savingname']?></option>
+            <?php
+} while ($row_cmbsaving = mysql_fetch_assoc($cmbsaving));
+  $rows = mysql_num_rows($cmbsaving);
+  if($rows > 0) {
+      mysql_data_seek($cmbsaving, 0);
+    $row_cmbsaving = mysql_fetch_assoc($cmbsaving);
+  }
+?>
+          </select>
+      </td>
     </tr>
     <tr valign="baseline">
       <td><input type="submit" value="Add new Transaction" class="mybutton" /></td>
@@ -255,9 +302,11 @@ closeanalysis.addEventListener('click' , () =>{
 })
 
  	</script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
 </body>
 </html>
 <?php
 mysql_free_result($RecordsetSavingTransaction);
 mysql_free_result($RecordsetSumSaving);
+mysql_free_result($cmbsaving);
 ?>

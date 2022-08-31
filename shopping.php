@@ -90,7 +90,7 @@ $totalRows_RecordsetSumShoppingTrans = mysql_num_rows($RecordsetSumShoppingTrans
 
 
 mysql_select_db($database_expenceconn, $expenceconn);
-$query_cmbShopping = "SELECT shopping.shoppingID, shopping.shoppingname FROM shopping WHERE shopping.pid = 987456";
+$query_cmbShopping = "SELECT shopping.shoppingID, shopping.shoppingname FROM shopping WHERE shopping.pid = '{$currentUser}'";
 $cmbShopping = mysql_query($query_cmbShopping, $expenceconn) or die(mysql_error());
 $row_cmbShopping = mysql_fetch_assoc($cmbShopping);
 $totalRows_cmbShopping = mysql_num_rows($cmbShopping);
@@ -105,6 +105,7 @@ $totalRows_cmbShopping = mysql_num_rows($cmbShopping);
 	<link rel="stylesheet" type="text/css" href="styles/banner.css">
 	<link rel="stylesheet" type="text/css" href="styles/shopping.css">
 	<link rel="stylesheet" type="text/css" href="styles/popuptransaction.css">
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 </head>
 <body>
 	<div class="mybody">
@@ -124,7 +125,33 @@ $totalRows_cmbShopping = mysql_num_rows($cmbShopping);
  			</tr>
  		</table>
 	</div>
-	<br>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container-fluid">
+    <!-- <a class="navbar-brand" href="#">Username</a> -->
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <?php echo $_SESSION['username'] ?>
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="userprofile.php">Profile</a></li>
+            <li><a class="dropdown-item" href="usermanual.php">User manual</a></li>
+            <li><a class="dropdown-item" href="logout.php">Logout</a></li>
+          </ul>
+        </li>
+
+        
+      </ul>
+ 
+    </div>
+  </div>
+</nav>
+<br><br>
 	<center>
 		<h2 class="dodgerblueText">Your shopping manager</h2>
 	</center>
@@ -274,6 +301,7 @@ closeanalysis.addEventListener('click' , () =>{
 })
 
  	</script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
 </body>
 </html>
 <?php

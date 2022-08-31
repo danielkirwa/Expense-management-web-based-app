@@ -54,7 +54,14 @@ $totalRows_RecordsetSumSaving = mysql_num_rows($RecordsetSumSaving);
 	<title>My account</title>
 	<link rel="stylesheet" type="text/css" href="styles/dashboard.css">
 	<link rel="stylesheet" type="text/css" href="styles/banner.css">
+	<link rel="stylesheet" type="text/css" href="styles/popupanalysis.css">
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 	
+ <meta name="totalExpense" content="<?php echo 0.0 +$row_RecordsetTransAmount['AMOUNT'] + $row_RecordsetSumShoppingTrans['TOTALAMOUNT'] + $row_RecordsetSumSaving['TOTALSAVING']; ?>">
+<meta name="billExpense" content="<?php echo 0.0 + $row_RecordsetTransAmount['AMOUNT']; ?>">
+<meta name="shoppingExpense" content="<?php echo 0.0 + $row_RecordsetSumShoppingTrans['TOTALAMOUNT']; ?>">
+<meta name="savingExpense" content="<?php echo 0.0 + $row_RecordsetSumSaving['TOTALSAVING']; ?>">
+
 </head>
 <body>
 	<div class="banner">
@@ -65,13 +72,41 @@ $totalRows_RecordsetSumSaving = mysql_num_rows($RecordsetSumSaving);
  				</td>
  				<td>
  					<img src="assets/totalspent.png" width="75px" class="accountAvertor">
- 					<label><?php echo $_SESSION['username']; ?></label>
  				</td>
  				
  			</tr>
  		</table>
 	</div>
-	<br>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container-fluid">
+    <!-- <a class="navbar-brand" href="#">Username</a> -->
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <?php echo $_SESSION['username'] ?>
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <li><a class="dropdown-item" href="userprofile.php">Profile</a></li>
+            <li><a class="dropdown-item" href="usermanual.php">User manual</a></li>
+            <li><a class="dropdown-item" href="logout.php">Logout</a></li>
+          </ul>
+        </li>
+
+        
+      </ul>
+ 
+    </div>
+  </div>
+</nav>
+<br><br>
+
+
 <section class="main-dashboard">
  	<div class="main-totalusers"> 
  		
@@ -81,7 +116,7 @@ $totalRows_RecordsetSumSaving = mysql_num_rows($RecordsetSumSaving);
  					<img src="assets/totalspent.png" width="75px">
  				</td>
  				<td>
- 					<label class="largeText dodgerblueText">Your Total Expense : <span>
+ 					<label class="largeText dodgerblueText">Your Total Expense : <span id="totalExpense">
  <?php echo 0.0 +$row_RecordsetTransAmount['AMOUNT'] + $row_RecordsetSumShoppingTrans['TOTALAMOUNT'] + $row_RecordsetSumSaving['TOTALSAVING']; ?>
  					</span></label>
  				</td>
@@ -97,7 +132,7 @@ $totalRows_RecordsetSumSaving = mysql_num_rows($RecordsetSumSaving);
  					<img src="assets/expence.png" width="75px">
  				</td>
  				<td>
- 					<label class="smallText dodgerblueText">Bills : <span>
+ 					<label class="smallText dodgerblueText">Bills : <span id="billExpense">
  						<?php echo 0.0 + $row_RecordsetTransAmount['AMOUNT']; ?>
  					</span></label>
  				</td>
@@ -111,7 +146,7 @@ $totalRows_RecordsetSumSaving = mysql_num_rows($RecordsetSumSaving);
  					<img src="assets/shopping.png" width="75px">
  				</td>
  				<td>
- 					<label class="smallText dodgerblueText">Shopping : <span>
+ 					<label class="smallText dodgerblueText">Shopping : <span id="shoppingExpense">
  						<?php echo 0.0 + $row_RecordsetSumShoppingTrans['TOTALAMOUNT']; ?>
  					</span></label>
  				</td>
@@ -125,65 +160,62 @@ $totalRows_RecordsetSumSaving = mysql_num_rows($RecordsetSumSaving);
  					<img src="assets/savings.png" width="75px">
  				</td>
  				<td>
- 					<label class="smallText dodgerblueText">Savings : <span>
+ 					<label class="smallText dodgerblueText">Savings : <span id="savingExpense">
  						<?php echo 0.0 + $row_RecordsetSumSaving['TOTALSAVING']; ?>
  					</span></label>
  				</td>
  			</tr>
  		</table>
  		</div>
- 		<div class="enroll-card hoverme" id="emergencybtn">
- 			<table>
- 			<tr>
- 				<td>
- 					<img src="assets/emergency.png" width="75px">
- 				</td>
- 				<td>
- 					<label class="smallText dodgerblueText">Emergency : <span>0.0</span></label>
- 				</td>
- 			</tr>
- 		</table>
- 		</div>
  	</div>
- 	<div class="scroll-table">
- 	<div class="table-holder">
- 		<div class="table-caption">
- 			<label class="largeText brownText">Recent Transactions  <span></span></label>
- 		</div>
- 		<table>
- 			<thead>
- 				<tr>
- 					<th>Date/Time</th>
- 					<th>Transaction</th>
- 					<th>Anount</th>
- 					<th>Satus</th>
- 					<th>Action</th>
- 				</tr>
- 			</thead>
- 			<tbody>
- 				<tr>
- 					<td>12/12/2020</td>
- 					<td>Shopping</td>
- 					<td>4500</td>
- 					<td>Complete</td>
- 					<td>Action</td>
- 				</tr>
- 				<tr>
- 					<td>10/10/2020</td>
- 					<td>Electric Bill</td>
- 					<td>2500</td>
- 					<td>Complete</td>
- 					<td>Action</td>
- 				</tr>
- 			</tbody>
- 		</table>
- 	</div>
- 	</div>
+
  	
  </section>
+ <hr>
+ <center><label class="largeText dodgerblueText">Expense Analysis</label></center>
+ <hr>
+ <div class="analysis-div">
+ 	<!-- POP UP UNIT ANALYSIS -->
+  <div class="scroll-analysis">
+ 
+    <div class="analysis-holder">
+  <label class="analytic-titel">Visual report expense manager</label>
+  <hr>
+  <div class="report-holder">
+    <div class="report-card">
+      
+   <label>BILLS: <span>null</span></label><br>
+   <canvas id="graphallcases" width="50%"></canvas>
+    </div>
+    <div class="report-card-long">
+      
+   <label>SHOPPING <span>null</span></label><br>
+   <canvas id="barGraphResults" width="50%"></canvas>
+    </div>
+    <div class="report-card-long">
+      
+   <label>SAVINGS <span>null</span></label><br>
+   <canvas id="barGraphResults" width="50%"></canvas>
+    </div>
+    <div class="report-card-longer">
+      
+   <label>GENERAL INFORMATION </label><br>
+    <canvas id="barGraphUnitReport" width="50%"></canvas>
+   
+    </div>
+  </div>
+  
+  </div>
+</div>
+
+<!-- end of grahp -->
+ 	
+ </div>
 
 
 </body>
 <script type="text/javascript" src="javascript/mainformpopup.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+<script type="text/javascript" src="javascript/analysis.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
 </html>

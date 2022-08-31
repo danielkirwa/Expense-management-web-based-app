@@ -19,10 +19,6 @@ let popsaving = document.getElementById('savingbtn');
 popsaving.addEventListener('click' , ()=>{
 location.href = "saving.php";
 })
-let popemergency = document.getElementById('emergencybtn')
-popemergency.addEventListener('click' , ()=>{
-location.href = "emergency.php";
-})
 
 closeanalysis.addEventListener('click' , () =>{
  closeanalytic();
