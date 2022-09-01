@@ -1,0 +1,14 @@
+.profile-holder{
+   width: 80%;
+
+   margin-left: 10%;
+   background: rgba(255, 255, 255, .5);
+   display: flex;
+   border-radius: 10px;
+   box-shadow: 0 0 30px rgba(0, 0, 0, .15);
+   transform-style: preserve-3d;
+
+
+}
+
+ 
