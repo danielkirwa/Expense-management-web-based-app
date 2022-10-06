@@ -61,6 +61,9 @@ if(isset($_POST['btnlogin'])){
     echo '<script>alert("Invalid login details")</script>';
   }
 
+  }else{
+     $_SESSION['username'] = $username;
+  $_SESSION['accountid'] = '987456';
   }
 
 
@@ -83,7 +86,7 @@ if(isset($_POST['btnlogin'])){
 		<table>
  			<tr>
  				<td>
- 					<label  class="largeText">My Expense</label>
+ 					<label  class="largeText">My Personal Expense</label>
  				</td>
  				<td>
  					<img src="assets/totalspent.png" width="75px" class="accountAvertor">
@@ -101,7 +104,7 @@ if(isset($_POST['btnlogin'])){
         <td><input type="text" name="username" value="" class="myinputtext" placeholder="username" /></td>
       </tr>
       <tr valign="baseline">
-        <td><input type="text" name="password" value="" class="myinputtext" placeholder="password" /></td>
+        <td><input type="password" name="password" value="" class="myinputtext" placeholder="password" /></td>
       </tr>
       <tr valign="baseline">
         <td><center><input type="submit" name="btnlogin" value="Login Now" class="mybutton" /><cenetr></td>
@@ -110,7 +113,9 @@ if(isset($_POST['btnlogin'])){
     <input type="hidden" name="MM_insert" value="form1" />
   </form>
   <p>&nbsp;</p>
-<center><input type="button" value="Register Account" class="mybuttontrans" name="btn_call_login" /><cenetr>
+<center>
+     <a href="register.php" style="text-decoration: none;" class="mybuttontrans">Register an Account</a>
+   <cenetr>
 </div>
 
 

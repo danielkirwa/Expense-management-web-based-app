@@ -115,7 +115,7 @@ $totalRows_cmbShopping = mysql_num_rows($cmbShopping);
  				<td>
  					 <a href="dashboard.php">
             
-            <label class="largeText">My Expense</label>
+            <label class="largeText">My Personal Expense</label>
           </a>
  				</td>
  				<td>

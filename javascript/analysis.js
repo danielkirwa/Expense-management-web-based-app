@@ -9,7 +9,7 @@ var savingExpense = document.querySelector("meta[name=savingExpense]").content;
 
 console.log(billExpense);
 
-function createPieChart() {
+function createPieChartExpense() {
 	// body...
 var chartLabels = ["Savings", "Bills", "Shopping"];
 var chartValues = [savingExpense, billExpense, shoppingExpense];
@@ -19,7 +19,7 @@ var chartColors = [
   "#2b5797"
 ];
 
-new Chart("graphallcases", {
+new Chart("graphallcExpense", {
   type: "pie",
   data: {
     labels: chartLabels,
@@ -31,24 +31,23 @@ new Chart("graphallcases", {
   options: {
     title: {
       display: true,
-      text: "ALL CRIMES"
+      text: "All Expense Comparison"
     }
   }
 });
 }
 
-function createBarGraph() {
+function createBarGraphrShoping() {
 	// body...
-var chartLabels = ["Expert", "Intermediate", "Beginner","null"];
-var chartValues = [55, 49, 44,0];
+var chartLabels = ["Total Expense", "Shopping Expense","Trend"];
+var chartValues = [totalExpense, shoppingExpense, 0];
 var chartColors = [
   "#b91d47",
   "#00aba9",
-  "#2b5797",
-  "#fff"
+  "#ffffff"
 ];
 
-new Chart("barGraphResults", {
+new Chart("barGraphShopping", {
   type: "bar",
   data: {
     labels: chartLabels,
@@ -61,25 +60,23 @@ new Chart("barGraphResults", {
   	legend: {display: false},
     title: {
       display: true,
-      text: "AVARAGE SCORES"
+      text: "Shopping vs Tota  Expense"
     }
   }
 });
 }
 
-function createBarGraphrReport() {
+function createBarGraphrBills() {
 	// body...
-var chartLabels = ["Active", "Completed", "Inactive","Fail"," "];
-var chartValues = [55, 49, 44,12,0];
+var chartLabels = ["Total Expense", "Bills","Trend"];
+var chartValues = [totalExpense, billExpense,0];
 var chartColors = [
   "#b91d47",
-  "#00aba9",
-  "#2b5797",
   "#233637",
-  "#fff"
+  "#ffffff"
 ];
 
-new Chart("barGraphUnitReport", {
+new Chart("barGraphBills", {
   type: "bar",
   data: {
     labels: chartLabels,
@@ -92,13 +89,41 @@ new Chart("barGraphUnitReport", {
   	legend: {display: false},
     title: {
       display: true,
-      text: "GENERAL TRENDS"
+      text: "Bills vs Total Expense"
     }
   }
 });
 }
+function createBarGraphSavings() {
+  // body...
+var chartLabels = ["Total Expense", "Savings","Trend"];
+var chartValues = [totalExpense, savingExpense,0];
+var chartColors = [
+  "#b91d47",
+  "#2b5797",
+  "#ffffff"
+];
 
-createBarGraphrReport() ;
-createBarGraph();
-createPieChart();
+new Chart("barGraphSavings", {
+  type: "bar",
+  data: {
+    labels: chartLabels,
+    datasets: [{
+      backgroundColor: chartColors,
+      data: chartValues
+    }]
+  },
+  options: {
+    legend: {display: false},
+    title: {
+      display: true,
+      text: "Savings vs Total Expense"
+    }
+  }
+});
+}
+createBarGraphrShoping() ;
+createBarGraphrBills();
+createPieChartExpense();
+createBarGraphSavings()
 

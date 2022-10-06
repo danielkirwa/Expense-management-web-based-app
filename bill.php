@@ -135,7 +135,7 @@ $queryString_RecordSetBillTransaction = sprintf("&totalRows_RecordSetBillTransac
  				<td>
           <a href="dashboard.php">
             
-            <label class="largeText">My Expense</label>
+            <label class="largeText">My Presonal Expense</label>
           </a>
  					
  				</td>

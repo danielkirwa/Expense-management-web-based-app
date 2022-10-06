@@ -114,7 +114,7 @@ $queryString_RecordsetEmergency = sprintf("&totalRows_RecordsetEmergency=%d%s", 
 		<table>
  			<tr>
  				<td>
- 					<label class="largeText">My Expense</label>
+ 					<label class="largeText">My Personal Expense</label>
  				</td>
  				<td>
  					<img src="assets/potrait.png" width="75px" class="accountAvertor">

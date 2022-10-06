@@ -10,7 +10,7 @@ if ($_SESSION['accountid']) {
  $currentUser =   $_SESSION['accountid'];
 }else{
     header("Location:authapp.php");
-}
+
 
 ?>
 <?php
@@ -137,7 +137,7 @@ $queryString_RecordSetBill = sprintf("&totalRows_RecordSetBill=%d%s", $totalRows
  				<td>
  					 <a href="dashboard.php">
             
-            <label class="largeText">My Expense</label>
+            <label class="largeText">My Personal Expense</label>
           </a>
  				</td>
  				<td>

@@ -123,7 +123,7 @@ $queryString_RecordSetSaving = sprintf("&totalRows_RecordSetSaving=%d%s", $total
  				<td>
  					 <a href="dashboard.php">
             
-            <label class="largeText">My Expense</label>
+            <label class="largeText">My Personal Expense</label>
           </a>
  				</td>
  				<td>

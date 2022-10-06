@@ -68,7 +68,7 @@ $totalRows_RecordsetSumSaving = mysql_num_rows($RecordsetSumSaving);
 		<table>
  			<tr>
  				<td>
- 					<label class="largeText">My Expense</label>
+ 					<label class="largeText">My Personal Expense</label>
  				</td>
  				<td>
  					<img src="assets/totalspent.png" width="75px" class="accountAvertor">
@@ -184,25 +184,33 @@ $totalRows_RecordsetSumSaving = mysql_num_rows($RecordsetSumSaving);
   <div class="report-holder">
     <div class="report-card">
       
-   <label>BILLS: <span>null</span></label><br>
-   <canvas id="graphallcases" width="50%"></canvas>
+   <label>EXPENSE: <span>
+    <?php echo 0.0 +$row_RecordsetTransAmount['AMOUNT'] + $row_RecordsetSumShoppingTrans['TOTALAMOUNT'] + $row_RecordsetSumSaving['TOTALSAVING']; ?>
+   </span></label><br>
+   <canvas id="graphallcExpense" width="50%"></canvas>
     </div>
     <div class="report-card-long">
       
-   <label>SHOPPING <span>null</span></label><br>
-   <canvas id="barGraphResults" width="50%"></canvas>
+   <label>SHOPPING <span>
+       <?php echo 0.0 + $row_RecordsetSumShoppingTrans['TOTALAMOUNT']; ?>
+   </span></label><br>
+   <canvas id="barGraphShopping" width="50%"></canvas>
     </div>
     <div class="report-card-long">
       
-   <label>SAVINGS <span>null</span></label><br>
-   <canvas id="barGraphResults" width="50%"></canvas>
+   <label>BILLS <span>
+       <?php echo 0.0 + $row_RecordsetTransAmount['AMOUNT']; ?>
+   </span></label><br>
+   <canvas id="barGraphBills" width="50%"></canvas>
     </div>
-    <div class="report-card-longer">
+    <div class="report-card-long">
       
-   <label>GENERAL INFORMATION </label><br>
-    <canvas id="barGraphUnitReport" width="50%"></canvas>
-   
+   <label>SAVINGS <span>
+     <?php echo 0.0 + $row_RecordsetSumSaving['TOTALSAVING']; ?>
+   </span></label><br>
+   <canvas id="barGraphSavings" width="50%"></canvas>
     </div>
+  
   </div>
   
   </div>

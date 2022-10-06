@@ -77,7 +77,7 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form2")) {
 		<table>
  			<tr>
  				<td>
- 					<label  class="largeText">My Expense</label>
+ 					<label  class="largeText">My Personal Expense</label>
  				</td>
  				<td>
  					<img src="assets/totalspent.png" width="75px" class="accountAvertor">
@@ -129,7 +129,9 @@ if ((isset($_POST["MM_insert"])) && ($_POST["MM_insert"] == "form2")) {
     <input type="hidden" name="MM_insert" value="form2" />
   </form>
   <p>&nbsp;</p>
-  <center><input type="button" value="Already have an account" class="mybuttontrans" id="btn_call_login" /><cenetr>
+  <center>
+      <a href="authapp.php" style="text-decoration: none;" class="mybuttontrans">Already have an Account</a>
+    <cenetr>
 </div>
 
 
